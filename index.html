@@ -17,812 +17,149 @@
     --muted: #8a8478;
     --card-bg: #13120f;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--cream); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.35; }
 
-  body {
-    background: var(--black);
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.35;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 4rem;
-    background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent);
-    backdrop-filter: blur(4px);
-  }
-
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: 1.4rem;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    text-decoration: none;
-  }
-
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; background: linear-gradient(to bottom, rgba(10,10,8,0.97), transparent); backdrop-filter: blur(4px); }
+  .logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; }
   .logo span { color: var(--cream); }
-
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 2.5rem;
-  }
-
-  nav ul a {
-    color: var(--cream);
-    text-decoration: none;
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-  }
-
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul a { color: var(--cream); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; transition: opacity 0.2s; }
   nav ul a:hover { opacity: 1; color: var(--gold); }
 
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 8rem 4rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::after {
-    content: 'WORTH';
-    position: absolute;
-    right: -2rem;
-    top: 50%;
-    transform: translateY(-50%) rotate(90deg);
-    font-family: 'Playfair Display', serif;
-    font-size: 22vw;
-    font-weight: 900;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(201,168,76,0.08);
-    letter-spacing: -0.02em;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-
-  .hero-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.2s forwards;
-  }
-
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 7vw, 6.5rem);
-    font-weight: 900;
-    line-height: 1.05;
-    max-width: 14ch;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.4s forwards;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-sub {
-    margin-top: 2rem;
-    max-width: 50ch;
-    font-size: 1.1rem;
-    opacity: 0;
-    color: rgba(245,240,232,0.65);
-    animation: fadeUp 0.8s 0.6s forwards;
-  }
-
-  .hero-cta {
-    margin-top: 3rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.8s forwards;
-  }
-
-  .btn-primary {
-    background: var(--gold);
-    color: var(--black);
-    padding: 0.85rem 2.2rem;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.2s;
-  }
-
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 4rem 4rem; position: relative; overflow: hidden; }
+  .hero::after { content: 'WORTH'; position: absolute; right: -2rem; top: 50%; transform: translateY(-50%) rotate(90deg); font-family: 'Playfair Display', serif; font-size: 22vw; font-weight: 900; color: transparent; -webkit-text-stroke: 1px rgba(201,168,76,0.08); pointer-events: none; white-space: nowrap; }
+  .hero-tag { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 900; line-height: 1.05; max-width: 14ch; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { margin-top: 2rem; max-width: 50ch; font-size: 1.1rem; opacity: 0; color: rgba(245,240,232,0.65); animation: fadeUp 0.8s 0.6s forwards; }
+  .hero-cta { margin-top: 3rem; display: flex; gap: 1rem; align-items: center; opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
+  .hero-pages { margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s 1s forwards; }
+  .btn-primary { background: var(--gold); color: var(--black); padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.2s; }
   .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
-
-  .btn-ghost {
-    color: var(--cream);
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-decoration: none;
-    opacity: 0.6;
-    transition: opacity 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
+  .btn-outline { border: 1px solid rgba(201,168,76,0.4); color: var(--gold-light); padding: 0.7rem 1.5rem; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; }
+  .btn-outline:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
+  .btn-ghost { color: var(--cream); font-size: 0.85rem; letter-spacing: 0.08em; text-decoration: none; opacity: 0.6; transition: opacity 0.2s; display: flex; align-items: center; gap: 0.5rem; }
   .btn-ghost:hover { opacity: 1; }
-
-  .scroll-indicator {
-    position: absolute;
-    bottom: 3rem;
-    left: 4rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    opacity: 0;
-    animation: fadeUp 1s 1.2s forwards;
-  }
-
-  .scroll-line {
-    width: 40px;
-    height: 1px;
-    background: var(--muted);
-    animation: expandLine 1.5s 1.5s ease-out forwards;
-    transform-origin: left;
-    transform: scaleX(0);
-  }
-
+  .scroll-indicator { position: absolute; bottom: 3rem; left: 4rem; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 1rem; opacity: 0; animation: fadeUp 1s 1.2s forwards; }
+  .scroll-line { width: 40px; height: 1px; background: var(--muted); animation: expandLine 1.5s 1.5s ease-out forwards; transform-origin: left; transform: scaleX(0); }
   @keyframes expandLine { to { transform: scaleX(1); } }
 
-  /* ── MISSION STRIP ── */
-  .mission-strip {
-    border-top: 1px solid rgba(201,168,76,0.15);
-    border-bottom: 1px solid rgba(201,168,76,0.15);
-    padding: 2rem 4rem;
-    background: rgba(201,168,76,0.04);
-    text-align: center;
-  }
+  .mission-strip { border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15); padding: 2rem 4rem; background: rgba(201,168,76,0.04); text-align: center; }
+  .mission-strip p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: var(--gold-light); max-width: 70ch; margin: 0 auto; }
 
-  .mission-strip p {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 1.15rem;
-    color: var(--gold-light);
-    max-width: 70ch;
-    margin: 0 auto;
-  }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
 
-  /* ── SECTION LABELS ── */
-  .section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-
-  /* ── INTRO ── */
-  .intro-section {
-    padding: 7rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .intro-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
+  .intro-section { padding: 7rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; max-width: 1400px; margin: 0 auto; }
+  .intro-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; line-height: 1.2; }
   .intro-section h2 em { color: var(--gold); font-style: italic; }
+  .intro-section p { color: rgba(245,240,232,0.65); font-size: 1rem; margin-top: 1.5rem; }
+  .stats-row { display: flex; gap: 3rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  .stat-item .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--gold); display: block; }
+  .stat-item .stat-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 
-  .intro-section p {
-    color: rgba(245,240,232,0.65);
-    font-size: 1rem;
-    margin-top: 1.5rem;
-  }
+  /* deep-dive section linking to new pages */
+  .deepdive-strip { background: linear-gradient(135deg, #0f0e0a, #1a160d); border-top: 1px solid rgba(201,168,76,0.1); border-bottom: 1px solid rgba(201,168,76,0.1); padding: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto 2rem; }
+  .deepdive-card { padding: 2.5rem; border: 1px solid rgba(201,168,76,0.12); background: rgba(201,168,76,0.02); transition: border-color 0.3s, transform 0.3s; position: relative; overflow: hidden; }
+  .deepdive-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-3px); }
+  .deepdive-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,168,76,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
+  .deepdive-card:hover::before { opacity: 1; }
+  .deepdive-tag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .deepdive-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.25; }
+  .deepdive-card p { font-size: 0.88rem; color: rgba(245,240,232,0.55); line-height: 1.65; margin-bottom: 1.5rem; }
+  .deepdive-card a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; transition: gap 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .deepdive-card a:hover { gap: 0.8rem; }
 
-  .stats-row {
-    display: flex;
-    gap: 3rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
+  .profiles-section { padding: 4rem 4rem 8rem; max-width: 1400px; margin: 0 auto; }
+  .profiles-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+  .profiles-header h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; }
+  .country-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .filter-btn { padding: 0.4rem 1.2rem; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s; opacity: 0.6; }
+  .filter-btn:hover, .filter-btn.active { background: var(--gold); border-color: var(--gold); color: var(--black); opacity: 1; }
 
-  .stat-item .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--gold);
-    display: block;
-  }
-
-  .stat-item .stat-label {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  /* ── PROFILES SECTION ── */
-  .profiles-section {
-    padding: 4rem 4rem 8rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .profiles-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 3rem;
-  }
-
-  .profiles-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-  }
-
-  /* ── COUNTRY FILTER ── */
-  .country-filter {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 3rem;
-  }
-
-  .filter-btn {
-    padding: 0.4rem 1.2rem;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.15);
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: all 0.2s;
-    opacity: 0.6;
-  }
-
-  .filter-btn:hover, .filter-btn.active {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--black);
-    opacity: 1;
-  }
-
-  /* ── PROFILE CARDS GRID ── */
-  .profiles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .profile-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 2.5rem;
-    cursor: pointer;
-    transition: transform 0.3s, border-color 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .profile-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(201,168,76,0.04), transparent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .profile-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(201,168,76,0.3);
-  }
-
+  .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem; }
+  .profile-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.06); padding: 2.5rem; cursor: pointer; transition: transform 0.3s, border-color 0.3s; position: relative; overflow: hidden; }
+  .profile-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(201,168,76,0.04), transparent); opacity: 0; transition: opacity 0.3s; }
+  .profile-card:hover { transform: translateY(-4px); border-color: rgba(201,168,76,0.3); }
   .profile-card:hover::before { opacity: 1; }
-
-  .card-country {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .card-country .flag { font-size: 1rem; }
-
-  .profile-card h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-    line-height: 1.2;
-  }
-
-  .profile-card .title {
-    font-size: 0.8rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    margin-bottom: 1.5rem;
-  }
-
-  .net-worth-badge {
-    display: inline-block;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.25);
-    padding: 0.25rem 0.8rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--gold-light);
-    margin-bottom: 1.5rem;
-  }
-
-  .card-lesson-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .card-lesson {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 1rem;
-    color: rgba(245,240,232,0.8);
-    line-height: 1.5;
-    border-left: 2px solid var(--gold);
-    padding-left: 1rem;
-  }
-
-  .card-footer {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .read-more {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: gap 0.2s;
-  }
-
+  .card-country { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .profile-card h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.2; }
+  .profile-card .title { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 1.5rem; }
+  .net-worth-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); padding: 0.25rem 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--gold-light); margin-bottom: 1.5rem; text-decoration: none; transition: background 0.2s, border-color 0.2s; cursor: pointer; }
+  .net-worth-badge:hover { background: rgba(201,168,76,0.2); border-color: rgba(201,168,76,0.5); }
+  .net-worth-badge .live-dot { width: 6px; height: 6px; background: #4caf82; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .card-lesson-label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .card-lesson { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: rgba(245,240,232,0.8); line-height: 1.5; border-left: 2px solid var(--gold); padding-left: 1rem; }
+  .card-footer { margin-top: 2rem; display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+  .read-more { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.5rem; transition: gap 0.2s; }
   .profile-card:hover .read-more { gap: 0.8rem; }
 
-  .worth-pillars {
-    display: flex;
-    gap: 0.3rem;
-  }
-
-  .pillar {
-    width: 6px;
-    height: 6px;
-    background: var(--gold);
-    opacity: 0.3;
-    border-radius: 50%;
-  }
-
-  .pillar.active { opacity: 1; }
-
-  /* ── FEATURED PROFILE (large card) ── */
-  .featured-card {
-    grid-column: span 2;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    min-height: 400px;
-  }
-
-  .featured-card .card-visual {
-    background: linear-gradient(135deg, #1a1508, #2d2010);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .featured-card .card-visual::after {
-    content: attr(data-initial);
-    position: absolute;
-    font-family: 'Playfair Display', serif;
-    font-size: 14rem;
-    font-weight: 900;
-    color: rgba(201,168,76,0.06);
-    line-height: 1;
-  }
-
-  .featured-card .card-content {
-    padding: 3rem;
-  }
-
-  .featured-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    background: var(--gold);
-    color: var(--black);
-    padding: 0.2rem 0.6rem;
-    display: inline-block;
-    margin-bottom: 1.5rem;
-  }
-
+  .featured-card { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 0; min-height: 400px; }
+  .featured-card .card-visual { background: linear-gradient(135deg, #1a1508, #2d2010); display: flex; align-items: center; justify-content: center; padding: 3rem; position: relative; overflow: hidden; }
+  .featured-card .card-visual::after { content: attr(data-initial); position: absolute; font-family: 'Playfair Display', serif; font-size: 14rem; font-weight: 900; color: rgba(201,168,76,0.06); line-height: 1; }
+  .featured-card .card-content { padding: 3rem; }
+  .featured-tag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; background: var(--gold); color: var(--black); padding: 0.2rem 0.6rem; display: inline-block; margin-bottom: 1.5rem; }
   .featured-card h3 { font-size: 2.2rem; }
-  .featured-card .card-body {
-    margin-top: 1.5rem;
-    font-size: 0.95rem;
-    color: rgba(245,240,232,0.65);
-    line-height: 1.7;
-  }
+  .featured-card .card-body { margin-top: 1.5rem; font-size: 0.95rem; color: rgba(245,240,232,0.65); line-height: 1.7; }
 
-  /* ── MODAL ── */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.9);
-    z-index: 200;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    backdrop-filter: blur(8px);
-    overflow-y: auto;
-  }
-
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; display: none; align-items: flex-start; justify-content: center; padding: 2rem; backdrop-filter: blur(8px); overflow-y: auto; }
   .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--card-bg);
-    border: 1px solid rgba(201,168,76,0.2);
-    max-width: 800px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 4rem;
-    position: relative;
-    animation: modalIn 0.3s ease-out;
-  }
-
-  @keyframes modalIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .modal-close {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: color 0.2s;
-    line-height: 1;
-  }
-
+  .modal { background: var(--card-bg); border: 1px solid rgba(201,168,76,0.2); max-width: 800px; width: 100%; margin: auto; padding: 4rem; position: relative; animation: modalIn 0.3s ease-out; }
+  @keyframes modalIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; transition: color 0.2s; line-height: 1; }
   .modal-close:hover { color: var(--cream); }
+  .modal-country { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .modal h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 0.5rem; }
+  .modal .modal-title { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .modal-worth-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .modal-worth { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); padding: 0.4rem 1.2rem; font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--gold-light); text-decoration: none; transition: background 0.2s; }
+  .modal-worth:hover { background: rgba(201,168,76,0.2); }
+  .modal-worth .live-dot { width: 7px; height: 7px; background: #4caf82; border-radius: 50%; animation: pulse 2s infinite; }
+  .bloomberg-note { font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .modal-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; color: var(--gold-light); border-left: 3px solid var(--gold); padding: 1rem 1.5rem; margin: 2rem 0; background: rgba(201,168,76,0.05); line-height: 1.5; }
+  .modal-section-title { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; margin-top: 2rem; }
+  .modal p { color: rgba(245,240,232,0.72); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; }
+  .lessons-list { list-style: none; margin-top: 0.5rem; }
+  .lessons-list li { padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: rgba(245,240,232,0.72); font-size: 0.95rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .lessons-list li::before { content: '→'; color: var(--gold); flex-shrink: 0; margin-top: 0.1em; }
 
-  .modal-country {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.5rem;
-  }
+  /* PHILOSOPHY */
+  .philosophy-section { padding: 8rem 4rem; background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.03), transparent); text-align: center; position: relative; overflow: hidden; }
+  .philosophy-section::before { content: '"'; position: absolute; font-family: 'Playfair Display', serif; font-size: 30rem; color: rgba(201,168,76,0.03); top: -5rem; left: 50%; transform: translateX(-50%); line-height: 1; pointer-events: none; }
+  .philosophy-section h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 400; max-width: 20ch; margin: 0 auto 2rem; line-height: 1.3; }
+  .philosophy-section p { max-width: 55ch; margin: 0 auto; color: rgba(245,240,232,0.55); font-size: 1rem; }
+  .three-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1000px; margin: 5rem auto 0; text-align: left; }
+  .pillar-card { padding: 2rem; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); }
+  .pillar-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: rgba(201,168,76,0.2); line-height: 1; margin-bottom: 1rem; }
+  .pillar-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.8rem; color: var(--gold-light); }
+  .pillar-card p { font-size: 0.88rem; color: rgba(245,240,232,0.55); line-height: 1.65; }
 
-  .modal h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.8rem;
-    font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-  }
-
-  .modal .modal-title {
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin-bottom: 2rem;
-  }
-
-  .modal-worth {
-    display: inline-block;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.3);
-    padding: 0.4rem 1.2rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--gold-light);
-    margin-bottom: 2.5rem;
-  }
-
-  .modal-section-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.8rem;
-    margin-top: 2rem;
-  }
-
-  .modal-quote {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 1.3rem;
-    color: var(--gold-light);
-    border-left: 3px solid var(--gold);
-    padding: 1rem 1.5rem;
-    margin: 2rem 0;
-    background: rgba(201,168,76,0.05);
-    line-height: 1.5;
-  }
-
-  .modal p {
-    color: rgba(245,240,232,0.72);
-    font-size: 0.95rem;
-    line-height: 1.75;
-    margin-bottom: 1rem;
-  }
-
-  .lessons-list {
-    list-style: none;
-    margin-top: 0.5rem;
-  }
-
-  .lessons-list li {
-    padding: 0.8rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    color: rgba(245,240,232,0.72);
-    font-size: 0.95rem;
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-  }
-
-  .lessons-list li::before {
-    content: '→';
-    color: var(--gold);
-    flex-shrink: 0;
-    margin-top: 0.1em;
-  }
-
-  /* ── PHILOSOPHY SECTION ── */
-  .philosophy-section {
-    padding: 8rem 4rem;
-    background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.03), transparent);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .philosophy-section::before {
-    content: '"';
-    position: absolute;
-    font-family: 'Playfair Display', serif;
-    font-size: 30rem;
-    color: rgba(201,168,76,0.03);
-    top: -5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .philosophy-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(1.8rem, 4vw, 3.5rem);
-    font-weight: 400;
-    max-width: 20ch;
-    margin: 0 auto 2rem;
-    line-height: 1.3;
-  }
-
-  .philosophy-section p {
-    max-width: 55ch;
-    margin: 0 auto;
-    color: rgba(245,240,232,0.55);
-    font-size: 1rem;
-  }
-
-  .three-pillars {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    max-width: 1000px;
-    margin: 5rem auto 0;
-    text-align: left;
-  }
-
-  .pillar-card {
-    padding: 2rem;
-    border: 1px solid rgba(255,255,255,0.06);
-    background: rgba(255,255,255,0.02);
-  }
-
-  .pillar-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 900;
-    color: rgba(201,168,76,0.2);
-    line-height: 1;
-    margin-bottom: 1rem;
-  }
-
-  .pillar-card h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    margin-bottom: 0.8rem;
-    color: var(--gold-light);
-  }
-
-  .pillar-card p {
-    font-size: 0.88rem;
-    color: rgba(245,240,232,0.55);
-    line-height: 1.65;
-  }
-
-  /* ── NEWSLETTER ── */
-  .newsletter-section {
-    padding: 6rem 4rem;
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .newsletter-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .newsletter-section p {
-    color: rgba(245,240,232,0.55);
-    margin-bottom: 2rem;
-  }
-
-  .newsletter-form {
-    display: flex;
-    gap: 0;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .newsletter-form input {
-    flex: 1;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-right: none;
-    color: var(--cream);
-    padding: 0.9rem 1.5rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-  }
-
+  /* NEWSLETTER */
+  .newsletter-section { padding: 6rem 4rem; max-width: 700px; margin: 0 auto; text-align: center; }
+  .newsletter-section h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 1rem; }
+  .newsletter-section p { color: rgba(245,240,232,0.55); margin-bottom: 2rem; }
+  .newsletter-form { display: flex; max-width: 500px; margin: 0 auto; }
+  .newsletter-form input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-right: none; color: var(--cream); padding: 0.9rem 1.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; }
   .newsletter-form input::placeholder { color: var(--muted); }
   .newsletter-form input:focus { border-color: rgba(201,168,76,0.4); }
-
-  .newsletter-form button {
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    padding: 0.9rem 1.8rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
+  .newsletter-form button { background: var(--gold); color: var(--black); border: none; padding: 0.9rem 1.8rem; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
   .newsletter-form button:hover { background: var(--gold-light); }
 
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 3rem 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem 4rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  footer .footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.12em; }
+  footer p { font-size: 0.78rem; color: var(--muted); }
+  footer nav { padding: 0; position: static; background: none; backdrop-filter: none; }
+  footer nav a { color: var(--muted); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  footer nav a:hover { color: var(--gold); }
 
-  footer .footer-logo {
-    font-family: 'Playfair Display', serif;
-    font-weight: 900;
-    font-size: 1.1rem;
-    color: var(--gold);
-    letter-spacing: 0.12em;
-  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-  footer p {
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav { padding: 1rem 1.5rem; }
     nav ul { display: none; }
@@ -834,7 +171,8 @@
     .featured-card .card-visual { display: none; }
     .three-pillars { grid-template-columns: 1fr; }
     .philosophy-section { padding: 5rem 1.5rem; }
-    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .deepdive-strip { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+    footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
     .modal { padding: 2rem; }
     .modal h2 { font-size: 2rem; }
     .newsletter-form { flex-direction: column; }
@@ -845,15 +183,15 @@
 <body>
 
 <nav>
-  <a href="#" class="logo">WORTH<span>BORN</span></a>
+  <a href="index.html" class="logo">WORTH<span>BORN</span></a>
   <ul>
     <li><a href="#profiles">Profiles</a></li>
-    <li><a href="#mission">Our Mission</a></li>
+    <li><a href="beliefs.html">The Belief System</a></li>
+    <li><a href="berkshire.html">Abel &amp; Berkshire</a></li>
     <li><a href="#newsletter">Newsletter</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <p class="hero-tag">// Self-Worth Through Real Stories</p>
   <h1>Every fortune began with a <em>belief</em> in one's own worth</h1>
@@ -862,18 +200,17 @@
     <a href="#profiles" class="btn-primary">Explore Profiles</a>
     <a href="#mission" class="btn-ghost">Our Mission →</a>
   </div>
-  <div class="scroll-indicator">
-    <div class="scroll-line"></div>
-    Scroll to explore
+  <div class="hero-pages">
+    <a href="beliefs.html" class="btn-outline">The Science of Beliefs →</a>
+    <a href="berkshire.html" class="btn-outline">Greg Abel &amp; Berkshire →</a>
   </div>
+  <div class="scroll-indicator"><div class="scroll-line"></div>Scroll to explore</div>
 </section>
 
-<!-- MISSION STRIP -->
 <div class="mission-strip">
   <p>"Your net worth is not your self-worth — but those who built great net worths almost always built great self-worth first."</p>
 </div>
 
-<!-- INTRO -->
 <section class="intro-section" id="mission">
   <div class="fade-in">
     <p class="section-label">// Why This Exists</p>
@@ -882,72 +219,59 @@
     <p style="margin-top:1rem;">WorthBorn exists to decode that moment. To find the turning points, the beliefs, the mindset shifts that preceded extraordinary achievement — and to share those lessons with every human who needs to hear them.</p>
   </div>
   <div class="stats-row fade-in">
-    <div class="stat-item">
-      <span class="stat-num">50+</span>
-      <span class="stat-label">Profiles</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">20+</span>
-      <span class="stat-label">Countries</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">1</span>
-      <span class="stat-label">Core Mission</span>
-    </div>
+    <div class="stat-item"><span class="stat-num">17+</span><span class="stat-label">Profiles</span></div>
+    <div class="stat-item"><span class="stat-num">20+</span><span class="stat-label">Countries</span></div>
+    <div class="stat-item"><span class="stat-num">1</span><span class="stat-label">Core Mission</span></div>
   </div>
 </section>
 
-<!-- PROFILES SECTION -->
+<!-- DEEP-DIVE PAGES STRIP -->
+<div class="deepdive-strip fade-in">
+  <div class="deepdive-card">
+    <div class="deepdive-tag">// New — Deep Dive</div>
+    <h3>Why Beliefs Are the Architecture of Everything</h3>
+    <p>Using NLP frameworks, neuroscience, and the stories of the world's greatest builders — understand why beliefs sit above every thought, emotion, value, and action you will ever take.</p>
+    <a href="beliefs.html">Read the full breakdown →</a>
+  </div>
+  <div class="deepdive-card">
+    <div class="deepdive-tag">// Breaking — Feb 28, 2026</div>
+    <h3>Greg Abel's First Berkshire Letter: Why Culture Beats Strategy</h3>
+    <p>The day after Greg Abel published his first annual letter as Berkshire CEO, we decode what he really said about beliefs, culture, and the operating framework that Buffett built and Abel intends to keep.</p>
+    <a href="berkshire.html">Read the analysis →</a>
+  </div>
+</div>
+
 <section class="profiles-section" id="profiles">
   <div class="profiles-header fade-in">
-    <div>
-      <p class="section-label">// The Builders</p>
-      <h2>Profiles in Self-Worth</h2>
-    </div>
+    <div><p class="section-label">// The Builders</p><h2>Profiles in Self-Worth</h2></div>
   </div>
-
   <div class="country-filter fade-in">
-    <button class="filter-btn active" onclick="filterProfiles('all', this)">All</button>
-    <button class="filter-btn" onclick="filterProfiles('usa', this)">🇺🇸 USA</button>
-    <button class="filter-btn" onclick="filterProfiles('india', this)">🇮🇳 India</button>
-    <button class="filter-btn" onclick="filterProfiles('china', this)">🇨🇳 China</button>
-    <button class="filter-btn" onclick="filterProfiles('europe', this)">🇪🇺 Europe</button>
-    <button class="filter-btn" onclick="filterProfiles('africa', this)">🌍 Africa</button>
-    <button class="filter-btn" onclick="filterProfiles('latam', this)">🌎 Latin America</button>
-    <button class="filter-btn" onclick="filterProfiles('asia', this)">🌏 Asia</button>
+    <button class="filter-btn active" onclick="filterProfiles('all',this)">All</button>
+    <button class="filter-btn" onclick="filterProfiles('usa',this)">🇺🇸 USA</button>
+    <button class="filter-btn" onclick="filterProfiles('india',this)">🇮🇳 India</button>
+    <button class="filter-btn" onclick="filterProfiles('china',this)">🇨🇳 China</button>
+    <button class="filter-btn" onclick="filterProfiles('europe',this)">🇪🇺 Europe</button>
+    <button class="filter-btn" onclick="filterProfiles('africa',this)">🌍 Africa</button>
+    <button class="filter-btn" onclick="filterProfiles('latam',this)">🌎 Latin Am.</button>
+    <button class="filter-btn" onclick="filterProfiles('asia',this)">🌏 Asia</button>
+    <button class="filter-btn" onclick="filterProfiles('sg',this)">🇸🇬 Singapore</button>
   </div>
-
   <div class="profiles-grid" id="profilesGrid"></div>
 </section>
 
-<!-- PHILOSOPHY -->
 <section class="philosophy-section" id="philosophy">
   <div class="fade-in">
     <p class="section-label">// The Core Insight</p>
     <h2>"Wealth is an outer reflection of an inner decision."</h2>
     <p>Every person on this site made a decision — often in obscurity, often without external validation — that they were enough. That they had something to offer. That they deserved to try.</p>
   </div>
-
   <div class="three-pillars">
-    <div class="pillar-card fade-in">
-      <div class="pillar-num">01</div>
-      <h3>Origin</h3>
-      <p>Where they came from. The circumstances that should have stopped them — and why they didn't. Most rich lists have ordinary beginnings.</p>
-    </div>
-    <div class="pillar-card fade-in">
-      <div class="pillar-num">02</div>
-      <h3>The Turning Point</h3>
-      <p>The moment they chose themselves. The decision to believe, the refusal to accept limits, the clarity that changed everything.</p>
-    </div>
-    <div class="pillar-card fade-in">
-      <div class="pillar-num">03</div>
-      <h3>The Lesson</h3>
-      <p>What you can take away and apply today. Real, actionable insights that have nothing to do with money and everything to do with worth.</p>
-    </div>
+    <div class="pillar-card fade-in"><div class="pillar-num">01</div><h3>Origin</h3><p>Where they came from. The circumstances that should have stopped them — and why they didn't. Most rich lists have ordinary beginnings.</p></div>
+    <div class="pillar-card fade-in"><div class="pillar-num">02</div><h3>The Turning Point</h3><p>The moment they chose themselves. The decision to believe, the refusal to accept limits, the clarity that changed everything.</p></div>
+    <div class="pillar-card fade-in"><div class="pillar-num">03</div><h3>The Lesson</h3><p>What you can take away and apply today. Real, actionable insights that have nothing to do with money and everything to do with worth.</p></div>
   </div>
 </section>
 
-<!-- NEWSLETTER -->
 <section class="newsletter-section" id="newsletter">
   <p class="section-label">// Weekly Wisdom</p>
   <h2>One story. One lesson. Every week.</h2>
@@ -960,11 +284,15 @@
 
 <footer>
   <div class="footer-logo">WORTHBORN</div>
-  <p>Empowering humans to find their self-worth · 2025</p>
-  <p style="color:var(--muted); font-size:0.75rem;">Built with purpose</p>
+  <nav style="display:flex;gap:2rem;">
+    <a href="beliefs.html">Belief System</a>
+    <a href="berkshire.html">Abel &amp; Berkshire</a>
+    <a href="#profiles">Profiles</a>
+    <a href="#newsletter">Newsletter</a>
+  </nav>
+  <p>Empowering humans to find their self-worth · 2026</p>
 </footer>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modal">
     <button class="modal-close" onclick="closeModalDirect()">×</button>
@@ -978,302 +306,272 @@ const profiles = [
     id: 1,
     name: "Elon Musk",
     title: "CEO of Tesla, SpaceX & X",
-    country: "usa",
-    countryLabel: "South Africa → USA",
-    flag: "🇺🇸",
-    netWorth: "~$200B",
+    country: "usa", countryLabel: "South Africa → USA", flag: "🇺🇸",
+    netWorth: "~$200B", bloombergSlug: "elon-musk",
     featured: true,
     corelesson: "The child who was bullied so severely he was hospitalised decided to become the most ambitious person on Earth. His self-worth wasn't given — it was forged.",
     quote: "When something is important enough, you do it even if the odds are not in your favor.",
-    origin: "Elon Musk grew up in Pretoria, South Africa — bookish, awkward, and routinely beaten by a gang of boys at school. At 12, he taught himself to code. At 17, he left for Canada alone. He arrived in North America with almost nothing, broke, doing odd jobs. He applied to Netscape and was ignored. He cold-emailed journalists and received no replies.",
+    origin: "Elon Musk grew up in Pretoria, South Africa — bookish, awkward, and routinely beaten by a gang of boys at school. At 12, he taught himself to code. At 17, he left for Canada alone. He arrived in North America with almost nothing, broke, doing odd jobs. He applied to Netscape and was ignored.",
     turningPoint: "The defining shift came when Musk stopped asking for permission. At 28, he co-founded Zip2 without knowing if anyone would fund it, simply because he believed the idea had value. Then PayPal. Then SpaceX — when everyone in the aerospace industry said a private company couldn't build rockets. He didn't consult his self-worth with them. He had already decided.",
-    lessons: [
-      "Self-worth is not something others grant you — it's a unilateral decision you make about your own value",
-      "Being rejected, ignored, or underestimated by others is data about them, not about you",
-      "Ambitious thinking is not arrogance — it is a form of respect for your own potential",
-      "Build in the gaps between what others say is possible",
-      "The moments that should have broken you are actually the curriculum for what you're building toward"
-    ]
+    lessons: ["Self-worth is not something others grant you — it's a unilateral decision you make about your own value","Being rejected, ignored, or underestimated by others is data about them, not about you","Ambitious thinking is not arrogance — it is a form of respect for your own potential","Build in the gaps between what others say is possible","The moments that should have broken you are actually the curriculum for what you're building toward"]
   },
   {
     id: 2,
-    name: "Oprah Winfrey",
-    title: "Media Executive & Philanthropist",
-    country: "usa",
-    countryLabel: "USA",
-    flag: "🇺🇸",
-    netWorth: "~$2.8B",
+    name: "Warren Buffett",
+    title: "Chairman of Berkshire Hathaway",
+    country: "usa", countryLabel: "USA", flag: "🇺🇸",
+    netWorth: "~$165B", bloombergSlug: "warren-buffett",
     featured: false,
-    corelesson: "Born into poverty on a Mississippi farm, abused, dismissed — she built a $3 billion media empire on the simple belief that her story and her voice had worth.",
-    quote: "You get in life what you have the courage to ask for.",
-    origin: "Oprah Winfrey was born to a single teenage mother in rural Mississippi. She wore dresses made of potato sacks as a child. She was sexually abused. She was fired from her first television job and told she was 'unfit for TV.' She ran away at 13. On paper, every indicator of self-worth pointed to zero.",
-    turningPoint: "At 19, Oprah landed a local radio job in Nashville. She didn't have the 'right' accent, the 'right' look, or the 'right' background. But she had something unusual: an unshakeable conviction that her authentic, unfiltered humanity was an asset, not a liability. She stopped performing what she thought others wanted and started being exactly, fully herself. That was the decision that changed everything.",
-    lessons: [
-      "Authentic self-expression is a more powerful business strategy than performing what others expect",
-      "Your wound is often your wisdom — the things that hurt you most prepare you for the work only you can do",
-      "Waiting for external validation is a trap; internal permission is the only permission that matters",
-      "Build around your voice, not around what others say voices should sound like",
-      "Self-worth expands as you give your gifts freely, without holding back"
-    ]
+    corelesson: "He knew his own mind so completely that he refused to follow the crowd for 70 years — and that inner certainty, not financial genius, is what made him the greatest investor of all time.",
+    quote: "The most important investment you can make is in yourself.",
+    origin: "Warren Buffett was born in Omaha, Nebraska in 1930 during the Great Depression. He sold chewing gum door-to-door at age 6, delivered newspapers at 13, and filed his first tax return at 14 — deducting his bicycle as a business expense. He applied to Harvard Business School and was rejected. He went to Columbia instead, where he studied under Benjamin Graham, the father of value investing. The rejection from Harvard, he later said, was the best thing that ever happened to him.",
+    turningPoint: "Buffett's defining self-worth moment was his refusal to manage money the way Wall Street expected. In the 1960s and 70s, his approach — reading annual reports alone in Omaha, ignoring market noise, thinking in decades — was considered eccentric. He didn't have a Bloomberg terminal. He didn't go to cocktail parties with other fund managers. He simply trusted his own judgment completely, even when the market humiliated him in the short term. When tech stocks soared in 1999–2000 and he refused to buy them, pundits declared him irrelevant. He was right. That inner certainty — the self-worth to be deeply, publicly contrarian — is the actual secret.",
+    lessons: ["The most powerful investing edge is emotional, not intellectual — it comes from knowing your own mind","Being comfortable being different requires a profound sense of self-worth","Read more than everyone else; knowledge compounds like interest","Long-term thinking is only possible if you have the self-worth not to need short-term validation","Circle of competence is a self-worth concept — knowing what you know, and what you don't, is profound self-awareness"]
   },
   {
     id: 3,
-    name: "Mukesh Ambani",
-    title: "Chairman of Reliance Industries",
-    country: "india",
-    countryLabel: "India",
-    flag: "🇮🇳",
-    netWorth: "~$100B",
+    name: "Charlie Munger",
+    title: "Former Vice Chairman, Berkshire Hathaway",
+    country: "usa", countryLabel: "USA", flag: "🇺🇸",
+    netWorth: "~$2.6B (at passing)", bloombergSlug: "warren-buffett",
     featured: false,
-    corelesson: "He inherited a company — then had the self-worth to completely reimagine it and build India's most valuable business from scratch, against every expert's advice.",
-    quote: "Meeting the deadlines is not good enough, beating the deadlines is my expectation.",
-    origin: "Mukesh Ambani grew up watching his father Dhirubhai Ambani build a textile empire from nothing — having started as a petrol pump worker. Mukesh studied at Stanford but left before completing his MBA when his father called him back to help run Reliance. He came back to a business that was successful but conventional.",
-    turningPoint: "When Mukesh took over Reliance after a bitter split with his brother, most analysts expected gradual decline. Instead, he bet everything on a vision nobody believed in: cheap, universal internet for 1.4 billion Indians. Jio was a $25 billion gamble on the self-worth of ordinary Indians to participate in the digital economy. He lost money for three years. Then changed a nation.",
-    lessons: [
-      "Self-worth means betting on your vision when experts say you're wrong",
-      "Serving people who have been underserved is both good business and an act of believing in their worth",
-      "Inheriting opportunity is different from inheriting greatness — you must still choose to grow",
-      "Think in decades, not quarters — only those with deep self-worth can hold a long-term vision",
-      "The size of your ambition should match the size of the problem you're trying to solve"
-    ]
+    corelesson: "He buried a child, went through a painful divorce, and lost his eyesight in one eye — then built a $2.6B fortune and became the wisest voice in American business, because he refused to let suffering define his worth.",
+    quote: "It's not supposed to be easy. Anyone who finds it easy is stupid.",
+    origin: "Charlie Munger was born in Omaha in 1924. He studied mathematics at University of Michigan, was drafted in WWII, and later studied meteorology. He applied to Harvard Law School without a bachelor's degree — and got in. He became a successful lawyer. Then, at 29, his son Teddy died of leukemia. He and his first wife divorced. He had no money. He was starting over at 30 with almost nothing, and one eye deteriorating from a botched cataract surgery that would eventually blind it.",
+    turningPoint: "Munger's response to catastrophic personal loss was not to collapse but to build a mental architecture that made him indestructible. He read voraciously across every discipline — physics, psychology, biology, history, economics — developing what he called a 'latticework of mental models.' This was a self-worth act: the decision that his mind was worth developing completely, regardless of circumstances. He didn't outsource his thinking to experts. He developed his own. When he partnered with Buffett, Munger was the one who pushed him from buying 'fair companies at wonderful prices' to buying 'wonderful companies at fair prices' — a philosophical upgrade worth hundreds of billions.",
+    lessons: ["Mental models are the ultimate self-worth investment — they compound forever","Inversion thinking: ask 'what must I avoid?' as much as 'what must I do?'","Pain and loss do not define your worth; your response to them does","Wisdom requires discomfort — seek it deliberately","The best education you can give yourself is self-directed, multi-disciplinary, and lifelong"]
   },
   {
     id: 4,
-    name: "Jack Ma",
-    title: "Co-Founder of Alibaba",
-    country: "china",
-    countryLabel: "China",
-    flag: "🇨🇳",
-    netWorth: "~$25B",
+    name: "Li Ka-shing",
+    title: "Founder of CK Hutchison Holdings",
+    country: "asia", countryLabel: "Hong Kong", flag: "🇭🇰",
+    netWorth: "~$36B", bloombergSlug: "li-ka-shing",
     featured: false,
-    corelesson: "Rejected by Harvard 10 times, rejected by KFC, failed every exam — he built a $500B company because he refused to let the world's 'no' become his internal 'no'.",
-    quote: "I failed a key primary school test twice, I failed the middle school test three times, I failed the college entrance exam twice... I applied for 30 jobs and got rejected from all of them.",
-    origin: "Jack Ma grew up poor in Hangzhou, China. He failed his primary school exams twice. Failed middle school three times. Failed the national college entrance exam — twice. He applied to 30 different jobs after university. KFC hired 23 of 24 applicants. He was the one who wasn't hired. He applied to Harvard 10 times. Rejected every time.",
-    turningPoint: "Ma's turning point was his first visit to the United States in 1995, where he saw the internet for the first time. He typed 'beer' into a search engine and found results from everywhere except China. He typed 'China' and found nothing. He didn't have money, connections, or technical skills. But he had one thing: absolute belief that Chinese businesses deserved to exist on the internet, and that if nobody else was going to build that platform, he was going to.",
-    lessons: [
-      "Rejection is not evidence that you don't belong — it's evidence that the current system hasn't caught up yet",
-      "You don't need to be the smartest in the room; you need to believe your vision more than anyone else doubts it",
-      "Build for the underserved — those who have been ignored carry enormous unrealised potential",
-      "Failure is curriculum. Every 'no' is refining your pitch, your resilience, your clarity",
-      "The gap between what exists and what should exist is where entrepreneurs live"
-    ]
+    corelesson: "He fled mainland China as a refugee at 15 with nothing, became a plastic flower salesman, and built Hong Kong's most powerful conglomerate — because he decided the circumstances of his birth were not the ceiling of his life.",
+    quote: "If you only work for money, you'll never make it. But if you love what you're doing and you always put the customer first, success will be yours.",
+    origin: "Li Ka-shing was born in 1928 in Chaozhou, China. His father died of tuberculosis when Ka-shing was 15, and the family fled to Hong Kong during the Japanese occupation. He had to drop out of school to support his mother and siblings. He worked in a plastics factory for 16 hours a day, then became a salesman. He had no formal education beyond middle school, no family connections in Hong Kong, and no capital.",
+    turningPoint: "At 22, Li Ka-shing borrowed money and started Cheung Kong Industries — making plastic flowers, which were in enormous demand in post-war America and Europe. He noticed that his factory workers were earning more than their managers because they were paid by piece-work. He studied the market obsessively, reinvested every dollar, and within a decade controlled a significant share of the global plastic flower market. The key insight: he treated every customer's satisfaction as a direct reflection of his own worth. When he moved into real estate in Hong Kong in the 1950s, he applied the same standard of absolute reliability. Builders, banks, and governments trusted him because he had demonstrated self-worth through integrity — word matching deed, consistently, for decades.",
+    lessons: ["Integrity at every level is not a moral choice — it is a self-worth statement that compounds over time","Education is not the credential; it is the habit of learning","Refugee status, poverty, and adversity are data points — not life sentences","Reinvest in yourself and your business before you reinvest anywhere else","The customer's experience is the clearest mirror of your internal standards"]
   },
   {
     id: 5,
-    name: "Aliko Dangote",
-    title: "Chairman of Dangote Group",
-    country: "africa",
-    countryLabel: "Nigeria",
-    flag: "🇳🇬",
-    netWorth: "~$13B",
+    name: "Li Xiting",
+    title: "Co-Founder & Chairman of Mindray",
+    country: "china", countryLabel: "China", flag: "🇨🇳",
+    netWorth: "~$17B", bloombergSlug: "",
     featured: false,
-    corelesson: "Africa's richest man built an industrial empire by believing African markets deserved world-class industry — and that he was the man to build it.",
-    quote: "If you don't have ambition, you shouldn't be alive.",
-    origin: "Aliko Dangote was born into a wealthy Muslim family in Kano, Nigeria. His great-grandfather was one of the richest people in Africa. He borrowed $3,000 from his uncle at age 21 to start a small trading business. His foundation was more privileged than most on this list — but the self-worth he needed was different: the belief that Africa could industrialise, and that he should be the one to do it.",
-    turningPoint: "In the 1990s and 2000s, most African industrialists imported finished goods and resold them. Dangote decided to manufacture. He built cement plants, flour mills, sugar refineries — industries that required decades of patience and billions in capital, in countries without reliable infrastructure, facing bureaucratic obstacles most investors fled from. The key insight: he didn't wait for Africa to 'be ready.' He built the infrastructure that would make it ready.",
-    lessons: [
-      "Don't wait for perfect conditions — build the conditions yourself",
-      "Serve your own people first; the opportunity is always closer than it seems",
-      "Long-term thinking is a form of self-respect — you're worth the wait",
-      "An economy cannot lift itself; it needs builders with the self-worth to create something foundational",
-      "Your cultural context is an asset, not a disadvantage"
-    ]
+    corelesson: "He left a secure government job to build China's most valuable medical device company from a rented room — because he believed Chinese engineers could build world-class products, not just copy them.",
+    quote: "We don't just want to make products for China. We want to make products the world will use.",
+    origin: "Li Xiting was born in Hubei province and trained as an engineer. In 1991, at a time when China's most ambitious career path was a stable government job or a state-owned enterprise, Li took a radical decision: he left his secure position at a Shenzhen state hospital to start a medical device company with two colleagues. They had minimal capital, no international distribution, and were entering an industry dominated by Western giants — GE, Philips, Siemens — that had 50-year head starts.",
+    turningPoint: "Mindray's turning point came when Li refused to compete on price alone — the typical Chinese manufacturing playbook of the 1990s. Instead, he invested heavily in R&D, believing that Chinese engineers could build products that were technically competitive with, not merely cheaper than, the global leaders. This was a profound act of self-worth applied to an entire nation's industrial identity. By the 2000s, Mindray patient monitors were in hospitals across Africa, Southeast Asia, and eventually Europe and North America. Today Mindray is the world's third-largest medical device company.",
+    lessons: ["Believing in the worth of your own people and engineers multiplies what's possible","Competing on quality rather than price is a self-worth statement at the organisational level","Industrial ambition is a form of patriotism — believing your country can produce excellence","R&D is deferred self-belief — investing now in what you haven't yet proven you can do","The move from imitating to innovating requires profound courage at every level of an organisation"]
   },
   {
     id: 6,
-    name: "Indra Nooyi",
-    title: "Former CEO of PepsiCo",
-    country: "india",
-    countryLabel: "India → USA",
-    flag: "🇮🇳",
-    netWorth: "~$290M",
+    name: "Ng Teng Fong",
+    title: "Founder of Sino Group & Far East Organization",
+    country: "sg", countryLabel: "Singapore & Hong Kong", flag: "🇸🇬",
+    netWorth: "~$10B (legacy)", bloombergSlug: "",
     featured: false,
-    corelesson: "An immigrant woman from Chennai who wore a sari to her first day at Yale became CEO of one of the world's largest companies — because she refused to edit herself into someone smaller.",
-    quote: "Just because you are CEO, don't think you have landed. You must continually increase your learning, the way you think, and the way you approach the organization.",
-    origin: "Indra Nooyi grew up in a middle-class family in Chennai, India. She played cricket and was in an all-girls rock band. She arrived at Yale Business School in 1978 with almost no money, unable to afford interview suits. She wore a sari to her first-round interviews. She was an Indian woman in a world of American men in grey suits.",
-    turningPoint: "Rather than erasing her identity to fit in, Nooyi turned it into her superpower. She brought a systems-thinking perspective shaped by growing up in India, a country that required creative problem-solving under resource constraints. When she became CEO, she launched 'Performance with Purpose' — the idea that a corporation's self-worth should be defined by more than profit. She was the first CEO of a Fortune 50 company to explicitly link corporate identity to social purpose.",
-    lessons: [
-      "Your foreignness, your difference, your 'wrong' background is often your most powerful competitive advantage",
-      "Refusing to edit yourself down to fit others' expectations is an act of radical self-worth",
-      "Leadership is most powerful when it comes from values, not tactics",
-      "You can succeed in a system without becoming it",
-      "Writing letters of appreciation to the parents of your employees is an example of self-worth expressed outward — the more you value yourself, the more you naturally recognise others"
-    ]
+    corelesson: "A Fujian immigrant who arrived in Singapore with almost nothing became the largest private landowner in Singapore and Hong Kong — by trusting his instincts about real estate when almost nobody else did.",
+    quote: "Land is the one thing they cannot make more of.",
+    origin: "Ng Teng Fong was born in 1928 in Fujian province, China. His family emigrated to Singapore when he was young, and he began working as a teenager in his father's small business. He had limited formal education and came of age during the Japanese occupation of Singapore, a period of severe scarcity and uncertainty. He started his first property ventures in Singapore in the 1950s, when the country was still a British colony with an uncertain future.",
+    turningPoint: "Ng Teng Fong's defining insight was demographic and spatial: Singapore and Hong Kong were both tiny territories with exploding populations and no room to grow. While others saw this as a constraint, he saw it as a permanent guarantee of land value. He began acquiring land aggressively in both cities when prices were low, holding for decades when others wanted liquidity. His self-worth showed in his patience — he never needed external validation that his strategy was working. He simply believed the mathematics of island geography, and held. By the time he died in 2010, Far East Organization was Singapore's largest private property developer, with a portfolio spanning hotels, shopping malls, and residential developments across Asia. His son Robert Ng continues to build the family legacy.",
+    lessons: ["Demographic and geographic insight, held with conviction, is one of the most powerful investment frameworks","Patience requires self-worth — you must believe in your thesis even when the market hasn't confirmed it yet","Immigrant hunger combined with long-term thinking is a remarkably potent combination","What looks like a constraint (small territory) can be the engine of appreciation","Building across generations requires believing your work will outlast your lifetime"]
   },
   {
     id: 7,
-    name: "Jorge Paulo Lemann",
-    title: "Co-Founder of 3G Capital",
-    country: "latam",
-    countryLabel: "Brazil",
-    flag: "🇧🇷",
-    netWorth: "~$22B",
+    name: "Oprah Winfrey",
+    title: "Media Executive & Philanthropist",
+    country: "usa", countryLabel: "USA", flag: "🇺🇸",
+    netWorth: "~$2.8B", bloombergSlug: "",
     featured: false,
-    corelesson: "A Brazilian who learned that excellence has no geography — and used that belief to acquire Budweiser, Burger King and Kraft Heinz.",
-    quote: "A dream that doesn't scare you isn't big enough.",
-    origin: "Jorge Paulo Lemann was born in Rio de Janeiro to Swiss-Brazilian parents. He became Brazil's best tennis player and went to Harvard on a scholarship. He returned to Brazil in the 1970s when few believed Brazilian businesses could compete globally — and decided that was wrong.",
-    turningPoint: "Lemann's philosophy was revolutionary for South America: hire only the best people, give them ownership, and set them absurdly ambitious targets. He built Garantia (Brazil's Goldman Sachs), then AB InBev (world's largest beer company), then 3G Capital. The turning point was a simple belief: Brazilian entrepreneurs deserved to compete on the world stage, not just the regional one. He demanded world-class standards when his context didn't.",
-    lessons: [
-      "Geography is not destiny — excellence can come from anywhere",
-      "The 'dream big' philosophy is itself an act of self-worth: small dreams are often self-doubt in disguise",
-      "Meritocracy is a form of respect — it says everyone's work has real, measurable worth",
-      "The companies you keep define your ceiling; surround yourself with excellence",
-      "Betting on people who haven't yet been given the chance to prove themselves is one of the highest-return investments"
-    ]
+    corelesson: "Born into poverty on a Mississippi farm, abused, dismissed — she built a $3B media empire on the simple belief that her voice and story had worth.",
+    quote: "You get in life what you have the courage to ask for.",
+    origin: "Oprah Winfrey was born to a single teenage mother in rural Mississippi. She wore dresses made of potato sacks as a child. She was sexually abused. She was fired from her first television job and told she was 'unfit for TV.' On paper, every indicator of self-worth pointed to zero.",
+    turningPoint: "At 19, Oprah landed a local radio job in Nashville. She didn't have the 'right' accent or background. But she had an unshakeable conviction that her authentic humanity was an asset, not a liability. She stopped performing what others expected and started being exactly, fully herself. That was the decision that changed everything.",
+    lessons: ["Authentic self-expression is a more powerful strategy than performing what others expect","Your wound is often your wisdom","Waiting for external validation is a trap; internal permission is the only permission that matters","Build around your voice, not what others say voices should sound like","Self-worth expands as you give your gifts freely, without holding back"]
   },
   {
     id: 8,
-    name: "Françoise Bettencourt Meyers",
-    title: "Chairwoman of L'Oréal",
-    country: "europe",
-    countryLabel: "France",
-    flag: "🇫🇷",
-    netWorth: "~$80B",
+    name: "Mukesh Ambani",
+    title: "Chairman of Reliance Industries",
+    country: "india", countryLabel: "India", flag: "🇮🇳",
+    netWorth: "~$100B", bloombergSlug: "mukesh-ambani",
     featured: false,
-    corelesson: "The world's richest woman inherited everything — then spent decades proving she was more than her inheritance by becoming a serious biblical scholar, pianist, and philanthropist who refused to be defined by wealth alone.",
-    quote: "Money has never been my motivation. The company, the values, what it represents — that matters.",
-    origin: "Françoise Bettencourt Meyers is the granddaughter of L'Oréal founder Eugène Schueller and daughter of the legendary Liliane Bettencourt. She grew up in extraordinary wealth and privilege. On paper, the question of self-worth should have been simple. In reality, the challenge was the opposite: how do you build a genuine sense of self when the world reduces you to your fortune?",
-    turningPoint: "Françoise chose to build an interior life of radical depth. She studied the Bible for decades, publishing three volumes of commentary. She became a serious classical pianist. She filed legal action against those she believed were exploiting her mother — an act that required enormous personal courage. She turned down most celebrity requests. She chose authenticity over the performance of wealth. Her self-worth came from what she built inside, not what she inherited outside.",
-    lessons: [
-      "True self-worth is what remains when you subtract your privileges",
-      "Depth of interior life is one of the most underrated forms of self-development",
-      "Courageous action — even against popular opinion — builds self-respect",
-      "Having everything material means you're forced to build self-worth in non-material ways",
-      "Your identity should be broader than your role or your wealth"
-    ]
+    corelesson: "He inherited a company — then had the self-worth to completely reimagine it against every expert's advice, and build India's most valuable business.",
+    quote: "Meeting the deadlines is not good enough, beating the deadlines is my expectation.",
+    origin: "Mukesh Ambani grew up watching his father Dhirubhai build a textile empire from nothing. Mukesh studied at Stanford but left before completing his MBA when his father called him back. He came back to a business that was successful but conventional.",
+    turningPoint: "When Mukesh took over after a bitter split with his brother, most analysts expected gradual decline. Instead, he bet $25 billion on cheap universal internet for 1.4 billion Indians. Jio lost money for three years. Then it changed a nation.",
+    lessons: ["Self-worth means betting on your vision when experts say you're wrong","Serving people who have been underserved is both good business and an act of believing in their worth","Think in decades, not quarters","The size of your ambition should match the size of the problem you're solving","Inheriting opportunity is different from inheriting greatness"]
   },
   {
     id: 9,
-    name: "Zhang Yiming",
-    title: "Founder of ByteDance / TikTok",
-    country: "asia",
-    countryLabel: "China",
-    flag: "🇨🇳",
-    netWorth: "~$40B",
+    name: "Jack Ma",
+    title: "Co-Founder of Alibaba",
+    country: "china", countryLabel: "China", flag: "🇨🇳",
+    netWorth: "~$25B", bloombergSlug: "jack-ma",
     featured: false,
-    corelesson: "An introvert who believed in the worth of human attention and the right of every person on Earth to access information and entertainment — built the most-downloaded app in history.",
-    quote: "I feel I lack some social abilities. For example, I don't like to attend big parties or gatherings. Maybe I have some kind of autism.",
-    origin: "Zhang Yiming grew up in Longyan, Fujian province — not a tech hub. He was quiet, introspective, and openly acknowledged his social awkwardness. He was not the charismatic visionary type. He was an engineer who read voraciously and thought in systems. He founded multiple companies before ByteDance, including a real estate search engine that failed.",
-    turningPoint: "The insight that made Zhang a billionaire was surprisingly humanistic: every person, regardless of location, income, or education, deserves access to information tailored precisely to them. TikTok's algorithm was not built to make people addicted — it was built on a belief in the worth of individual human attention and interest. That each person's 'for you' should actually be for them. The self-worth question Zhang answered was: do ordinary people, everywhere, deserve a personalised experience? He said yes, and built the infrastructure for it.",
-    lessons: [
-      "Introversion is not a weakness — deep thinking and systems perspective are extraordinary competitive advantages",
-      "Believing in the worth of other people's time and attention is itself a self-worth statement",
-      "Failure is data — multiple failed startups before ByteDance taught Zhang what works",
-      "Your product is a mirror of your values; build something that respects users",
-      "Patience with your own non-linearity is a form of self-worth in action"
-    ]
+    corelesson: "Rejected by Harvard 10 times, rejected by KFC — he built a $500B company because he refused to let the world's 'no' become his internal 'no'.",
+    quote: "I failed the college entrance exam twice, applied for 30 jobs and got rejected by all of them. KFC hired 23 of 24 applicants. I was the one who wasn't.",
+    origin: "Jack Ma grew up poor in Hangzhou. Failed exams repeatedly. Applied to 30 jobs after university and was rejected by all. Harvard rejected him 10 times. KFC hired 23 of 24 applicants — he was the one who wasn't hired.",
+    turningPoint: "His first visit to the US in 1995 — he saw the internet and searched 'beer' and found everything except China. He typed 'China' and found nothing. He had no money, connections, or technical skills. But he had absolute belief that Chinese businesses deserved to exist on the internet.",
+    lessons: ["Rejection is not evidence you don't belong — it's evidence the system hasn't caught up","You don't need to be the smartest; you need to believe your vision more than anyone else doubts it","Build for the underserved","Failure is curriculum — every 'no' refines your resilience","The gap between what exists and what should exist is where entrepreneurs live"]
   },
   {
     id: 10,
-    name: "Sara Blakely",
-    title: "Founder of Spanx",
-    country: "usa",
-    countryLabel: "USA",
-    flag: "🇺🇸",
-    netWorth: "~$1.2B",
+    name: "Aliko Dangote",
+    title: "Chairman of Dangote Group",
+    country: "africa", countryLabel: "Nigeria", flag: "🇳🇬",
+    netWorth: "~$13B", bloombergSlug: "aliko-dangote",
     featured: false,
-    corelesson: "She failed the LSAT twice, sold fax machines door-to-door for 7 years, and turned $5,000 of savings into a billion-dollar company because she believed her idea deserved to exist.",
-    quote: "My dad encouraged us to fail. Growing up, he would ask us: 'What have you failed at this week?' If we didn't have something, he'd be disappointed.",
-    origin: "Sara Blakely grew up in Clearwater, Florida. Her father actively celebrated failure — a radical parenting choice that built in her an unusual relationship with rejection. After twice failing the LSAT, she found herself selling fax machines door-to-door in Georgia, getting rejected face-to-face daily for seven years. This, it turned out, was the perfect education for what was coming.",
-    turningPoint: "Blakely had an idea: footless pantyhose that would smooth silhouette under white trousers. She had $5,000 in savings and no business experience. She called hosiery manufacturers for months — all men, all skeptical, most dismissive. She eventually convinced a family-owned mill in North Carolina after the owner's daughters tried the prototype and declared it worked. She got Neiman Marcus to carry it by putting it on in the bathroom and showing the buyer the before and after. She wrote her own patent to save legal fees. She had no connections. She had complete self-belief.",
-    lessons: [
-      "Learning to fail gracefully is one of the greatest gifts a parent or mentor can give — it builds unshakeable self-worth",
-      "Rejection practice (like door-to-door sales) is secretly extraordinary training for entrepreneurship",
-      "Resourcefulness is a symptom of self-worth — when you believe your idea matters, you find a way",
-      "Your consumer insight is valid even when every 'expert' dismisses it",
-      "You don't need connections; you need creativity and persistence"
-    ]
+    corelesson: "Africa's richest man built an industrial empire by believing African markets deserved world-class industry — and that he was the man to build it.",
+    quote: "If you don't have ambition, you shouldn't be alive.",
+    origin: "Aliko Dangote borrowed $3,000 from his uncle at age 21 to start a small trading business in Kano, Nigeria. He grew up in a wealthy Muslim family — but the self-worth required was different: believing that Africa should industrialise, and that he should be the one to do it.",
+    turningPoint: "While most African industrialists imported finished goods, Dangote decided to manufacture. Cement plants, flour mills, sugar refineries — industries requiring decades of patience in countries without reliable infrastructure. He built the conditions he needed rather than waiting for them.",
+    lessons: ["Don't wait for perfect conditions — build them yourself","Serve your own people first","Long-term thinking is a form of self-respect","An economy cannot lift itself; it needs builders with the courage to create something foundational","Your cultural context is an asset, not a disadvantage"]
   },
   {
     id: 11,
-    name: "Patrice Motsepe",
-    title: "Founder of African Rainbow Minerals",
-    country: "africa",
-    countryLabel: "South Africa",
-    flag: "🇿🇦",
-    netWorth: "~$3B",
+    name: "Indra Nooyi",
+    title: "Former CEO of PepsiCo",
+    country: "india", countryLabel: "India → USA", flag: "🇮🇳",
+    netWorth: "~$290M", bloombergSlug: "",
     featured: false,
-    corelesson: "During apartheid South Africa, he decided he would become one of the country's most successful business people — and then did exactly that.",
-    quote: "I want to be part of the economic development of South Africa. I want to make a contribution.",
-    origin: "Patrice Motsepe grew up during apartheid South Africa, a system specifically designed to deny the self-worth and economic participation of Black South Africans. His father ran a small store in Soweto. He studied law at the University of the Witwatersrand, one of the first Black students to do so, becoming a partner at law firm Bowman Gilfillan in 1994 — the same year apartheid ended.",
-    turningPoint: "In 1994, Motsepe made a pivotal decision: rather than staying in the safe, lucrative world of law, he would enter mining — an industry that had been the instrument of apartheid oppression and was still overwhelmingly white. He bought marginal gold mine assets that major companies had abandoned as unprofitable. Where others saw waste, he saw worth — in the mines, and in himself. Within a decade, African Rainbow Minerals was one of South Africa's largest mining companies.",
-    lessons: [
-      "Deciding your worth in a system that denies it is one of the most radical and powerful acts possible",
-      "The assets others discard can become the foundation of your fortune — this applies to your own overlooked potential too",
-      "You don't need to wait for a system to change to participate in it differently",
-      "Success in a context of adversity is not despite the adversity — it often builds exactly the resilience required",
-      "Economic self-worth is political — claiming economic power is an act of dignity"
-    ]
+    corelesson: "An immigrant woman from Chennai who wore a sari to her first Yale interview became CEO of a Fortune 50 company by refusing to edit herself into someone smaller.",
+    quote: "Just because you are CEO, don't think you have landed. You must continually increase your learning.",
+    origin: "Indra Nooyi grew up in Chennai, India. She arrived at Yale Business School in 1978 with almost no money, unable to afford interview suits. She wore a sari to her first-round interviews — an Indian woman in a world of American men in grey suits.",
+    turningPoint: "Rather than erasing her identity, she turned it into her superpower. When she became CEO, she launched 'Performance with Purpose' — the idea that a corporation's worth should be defined by more than profit. She was the first Fortune 50 CEO to explicitly link corporate identity to social purpose.",
+    lessons: ["Your difference is your most powerful competitive advantage","Refusing to edit yourself down is an act of radical self-worth","Leadership is most powerful when it comes from values, not tactics","You can succeed in a system without becoming it","The more you value yourself, the more naturally you recognise others"]
   },
   {
     id: 12,
+    name: "Jorge Paulo Lemann",
+    title: "Co-Founder of 3G Capital",
+    country: "latam", countryLabel: "Brazil", flag: "🇧🇷",
+    netWorth: "~$22B", bloombergSlug: "jorge-paulo-lemann",
+    featured: false,
+    corelesson: "A Brazilian who learned that excellence has no geography — and used that belief to acquire Budweiser, Burger King and Kraft Heinz.",
+    quote: "A dream that doesn't scare you isn't big enough.",
+    origin: "Jorge Paulo Lemann was born in Rio de Janeiro. He became Brazil's best tennis player and went to Harvard on a scholarship. He returned to Brazil in the 1970s when few believed Brazilian businesses could compete globally — and decided that was wrong.",
+    turningPoint: "His philosophy was revolutionary: hire only the best people, give them ownership, set absurdly ambitious targets. He built Garantia, then AB InBev (world's largest beer company), then 3G Capital. The core belief: Brazilian entrepreneurs deserved to compete on the world stage, not just regionally.",
+    lessons: ["Geography is not destiny — excellence can come from anywhere","Small dreams are often self-doubt in disguise","Meritocracy says everyone's work has real, measurable worth","The companies you keep define your ceiling","Betting on overlooked people is one of the highest-return investments"]
+  },
+  {
+    id: 13,
+    name: "Françoise Bettencourt Meyers",
+    title: "Chairwoman of L'Oréal",
+    country: "europe", countryLabel: "France", flag: "🇫🇷",
+    netWorth: "~$80B", bloombergSlug: "francoise-bettencourt-meyers",
+    featured: false,
+    corelesson: "The world's richest woman inherited everything — then built a genuine sense of self by becoming a biblical scholar and pianist who refused to be defined by wealth alone.",
+    quote: "Money has never been my motivation. The company, the values, what it represents — that matters.",
+    origin: "Françoise Bettencourt Meyers grew up in extraordinary wealth as granddaughter of L'Oréal founder Eugène Schueller. The challenge was the opposite of most people's: how do you build genuine self-worth when the world reduces you to your fortune?",
+    turningPoint: "She built an interior life of radical depth: decades of biblical study published in three volumes, serious classical piano, and the courage to file legal action against those exploiting her mother. She chose authenticity over the performance of wealth.",
+    lessons: ["True self-worth is what remains when you subtract your privileges","Depth of interior life is one of the most underrated forms of self-development","Courageous action, even against popular opinion, builds self-respect","Identity should be broader than your role or wealth","Having everything material forces you to build self-worth in non-material ways"]
+  },
+  {
+    id: 14,
+    name: "Zhang Yiming",
+    title: "Founder of ByteDance / TikTok",
+    country: "asia", countryLabel: "China", flag: "🇨🇳",
+    netWorth: "~$40B", bloombergSlug: "zhang-yiming",
+    featured: false,
+    corelesson: "An introvert who believed in the worth of human attention — built the most-downloaded app in history.",
+    quote: "I feel I lack some social abilities. I don't like big parties. Maybe I have some kind of autism.",
+    origin: "Zhang Yiming grew up in Longyan, Fujian — not a tech hub. He was quiet, introspective, and openly acknowledged his social awkwardness. He founded multiple companies before ByteDance, including a real estate search engine that failed.",
+    turningPoint: "His insight: every person, regardless of location or income, deserves information tailored precisely to them. TikTok's algorithm was built on a belief in the worth of individual human attention. Every person's 'For You' should actually be for them.",
+    lessons: ["Introversion is not a weakness — deep thinking is an extraordinary advantage","Believing in the worth of other people's attention is itself a self-worth statement","Multiple failed startups are the tuition fee","Build something that respects users","Patience with your own non-linearity is self-worth in action"]
+  },
+  {
+    id: 15,
+    name: "Sara Blakely",
+    title: "Founder of Spanx",
+    country: "usa", countryLabel: "USA", flag: "🇺🇸",
+    netWorth: "~$1.2B", bloombergSlug: "",
+    featured: false,
+    corelesson: "Failed the LSAT twice, sold fax machines door-to-door for 7 years, turned $5,000 into a billion-dollar company because she believed her idea deserved to exist.",
+    quote: "My dad encouraged us to fail. Growing up, he would ask us: 'What have you failed at this week?'",
+    origin: "Sara Blakely grew up in Clearwater, Florida. Her father celebrated failure deliberately — building in her an unusual relationship with rejection. After failing the LSAT twice, she spent seven years getting rejected door-to-door selling fax machines.",
+    turningPoint: "She had one idea and $5,000. She called hosiery manufacturers for months — all skeptical men. She got Neiman Marcus to carry it by putting the product on in the bathroom and showing the buyer the before and after. No connections. Complete self-belief.",
+    lessons: ["Learning to fail gracefully is one of the greatest gifts — it builds unshakeable self-worth","Rejection practice is secretly extraordinary training","Resourcefulness is a symptom of self-worth","Your consumer insight is valid even when every expert dismisses it","You don't need connections; you need creativity and persistence"]
+  },
+  {
+    id: 16,
+    name: "Patrice Motsepe",
+    title: "Founder of African Rainbow Minerals",
+    country: "africa", countryLabel: "South Africa", flag: "🇿🇦",
+    netWorth: "~$3B", bloombergSlug: "",
+    featured: false,
+    corelesson: "During apartheid South Africa, he decided he would become one of the country's most successful business people. And then did exactly that.",
+    quote: "I want to be part of the economic development of South Africa. I want to make a contribution.",
+    origin: "Patrice Motsepe grew up during apartheid — a system specifically designed to deny the self-worth and economic participation of Black South Africans. He became a partner at a major law firm in 1994, the same year apartheid ended.",
+    turningPoint: "In 1994, he left law to enter mining — an industry that had been the instrument of apartheid oppression, still overwhelmingly white. He bought abandoned marginal gold mine assets that major companies had declared unprofitable. Within a decade, African Rainbow Minerals was one of South Africa's largest mining companies.",
+    lessons: ["Deciding your worth in a system that denies it is one of the most radical acts possible","The assets others discard can become the foundation of your fortune","You don't need to wait for a system to change to participate in it differently","Adversity often builds exactly the resilience required","Economic self-worth is political — claiming economic power is an act of dignity"]
+  },
+  {
+    id: 17,
     name: "Carlos Slim Helú",
     title: "Chairman of Grupo Carso",
-    country: "latam",
-    countryLabel: "Mexico",
-    flag: "🇲🇽",
-    netWorth: "~$96B",
+    country: "latam", countryLabel: "Mexico", flag: "🇲🇽",
+    netWorth: "~$96B", bloombergSlug: "carlos-slim-helu",
     featured: false,
-    corelesson: "The son of a Lebanese immigrant to Mexico became the world's richest person by seeing value where others saw only risk — starting with himself.",
+    corelesson: "He bought everything during Mexico's financial crisis when everyone else fled — because believing in a country's future when nobody else does is the ultimate contrarian self-worth act.",
     quote: "When you live for others' opinions, you are dead. I don't want to live thinking about how I'll be remembered.",
-    origin: "Carlos Slim's father Julián Slim emigrated from Lebanon to Mexico at age 14, fleeing religious persecution. He started a dry goods store and taught his son to keep ledgers from age 12. Carlos was calculating compound interest as a child. He studied civil engineering and began buying undervalued stocks while still at university in the 1950s.",
-    turningPoint: "Slim's defining move came during Mexico's financial crisis of 1982, when the peso collapsed, capital fled, and most business people either left or contracted. Slim did the opposite: he bought. Real estate. Companies. Infrastructure. He saw self-worth where others saw risk. The price of Mexican assets during a crisis is essentially a question: 'Do you believe in this country's future?' Slim answered yes, loudly, with his capital. Mexico rewarded him exponentially.",
-    lessons: [
-      "Contrarian thinking is only possible if you have enough self-worth not to need the crowd's validation",
-      "Crisis creates opportunity for those who have done the quiet work of building conviction beforehand",
-      "Compound thinking — in finance and in personal development — rewards patience exponentially",
-      "Your heritage and cultural context contain wisdom that formal education doesn't",
-      "Long-term value thinking requires you to believe you'll still be here to collect — a statement of self-worth"
-    ]
+    origin: "Carlos Slim's father emigrated from Lebanon to Mexico at 14, fleeing persecution. He started a dry goods store and taught his son to keep ledgers from age 12. Carlos was calculating compound interest as a child.",
+    turningPoint: "During Mexico's financial crisis of 1982, the peso collapsed and capital fled. Slim did the opposite — he bought real estate, companies, infrastructure. The price of Mexican assets during a crisis is a question: 'Do you believe in this country's future?' Slim said yes, loudly, with capital.",
+    lessons: ["Contrarian thinking is only possible if you don't need the crowd's validation","Crisis creates opportunity for those who built conviction beforehand","Compound thinking rewards patience exponentially","Your heritage contains wisdom that formal education doesn't","Long-term value thinking is a statement of self-worth"]
   }
 ];
+
+function bloombergURL(slug) {
+  return slug ? `https://www.bloomberg.com/billionaires/profiles/${slug}` : null;
+}
 
 function renderProfiles(filter = 'all') {
   const grid = document.getElementById('profilesGrid');
   const filtered = filter === 'all' ? profiles : profiles.filter(p => p.country === filter);
-  
   grid.innerHTML = '';
 
   filtered.forEach((p, i) => {
-    const delay = (i % 3) * 100;
+    const delay = (i % 3) * 80;
+    const burl = bloombergURL(p.bloombergSlug);
+    const worthBadge = burl
+      ? `<a href="${burl}" target="_blank" rel="noopener" class="net-worth-badge" title="Live data on Bloomberg" onclick="event.stopPropagation()"><span class="live-dot"></span>${p.netWorth} · Live ↗</a>`
+      : `<span class="net-worth-badge">${p.netWorth}</span>`;
+
     if (p.featured && filter === 'all') {
       grid.innerHTML += `
         <div class="profile-card featured-card fade-in" style="transition-delay:${delay}ms" data-country="${p.country}" onclick="openModal(${p.id})">
           <div class="card-visual" data-initial="${p.name[0]}"></div>
           <div class="card-content">
             <span class="featured-tag">Featured</span>
-            <div class="card-country"><span class="flag">${p.flag}</span>${p.countryLabel}</div>
+            <div class="card-country"><span>${p.flag}</span>${p.countryLabel}</div>
             <h3>${p.name}</h3>
             <div class="title">${p.title}</div>
-            <div class="net-worth-badge">Net Worth: ${p.netWorth}</div>
+            ${worthBadge}
             <p class="card-body">${p.corelesson}</p>
-            <div class="card-footer">
-              <span class="read-more">Read Full Profile →</span>
-            </div>
+            <div class="card-footer"><span class="read-more">Read Full Profile →</span></div>
           </div>
         </div>`;
     } else {
-      const worthLevel = Math.min(5, Math.floor(Math.random() * 3) + 3);
-      const pillars = Array.from({length:5}, (_,j) => `<div class="pillar ${j < worthLevel ? 'active' : ''}"></div>`).join('');
       grid.innerHTML += `
         <div class="profile-card fade-in" style="transition-delay:${delay}ms" data-country="${p.country}" onclick="openModal(${p.id})">
-          <div class="card-country"><span class="flag">${p.flag}</span>${p.countryLabel}</div>
+          <div class="card-country"><span>${p.flag}</span>${p.countryLabel}</div>
           <h3>${p.name}</h3>
           <div class="title">${p.title}</div>
-          <div class="net-worth-badge">${p.netWorth}</div>
+          ${worthBadge}
           <div class="card-lesson-label">Core Self-Worth Lesson</div>
-          <div class="card-lesson">${p.corelesson.substring(0, 120)}…</div>
-          <div class="card-footer">
-            <span class="read-more">Read Full Profile →</span>
-            <div class="worth-pillars">${pillars}</div>
-          </div>
+          <div class="card-lesson">${p.corelesson.substring(0,120)}…</div>
+          <div class="card-footer"><span class="read-more">Read Full Profile →</span></div>
         </div>`;
     }
   });
 
   requestAnimationFrame(() => {
-    document.querySelectorAll('.profile-card.fade-in').forEach(el => {
-      setTimeout(() => el.classList.add('visible'), 50);
+    document.querySelectorAll('.profile-card.fade-in').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), 50 + i * 60);
     });
   });
 }
@@ -1287,12 +585,16 @@ function filterProfiles(country, btn) {
 function openModal(id) {
   const p = profiles.find(x => x.id === id);
   if (!p) return;
+  const burl = bloombergURL(p.bloombergSlug);
+  const worthBlock = burl
+    ? `<a href="${burl}" target="_blank" rel="noopener" class="modal-worth"><span class="live-dot"></span>Net Worth: ${p.netWorth}</a><span class="bloomberg-note">↗ Live Bloomberg data</span>`
+    : `<span class="modal-worth">${p.netWorth}</span>`;
   const lessonsHTML = p.lessons.map(l => `<li>${l}</li>`).join('');
   document.getElementById('modalContent').innerHTML = `
     <div class="modal-country">${p.flag} ${p.countryLabel}</div>
     <h2>${p.name}</h2>
     <div class="modal-title">${p.title}</div>
-    <div class="modal-worth">Net Worth: ${p.netWorth}</div>
+    <div class="modal-worth-row">${worthBlock}</div>
     <div class="modal-quote">"${p.quote}"</div>
     <div class="modal-section-title">// Origin Story</div>
     <p>${p.origin}</p>
@@ -1305,47 +607,16 @@ function openModal(id) {
   document.body.style.overflow = 'hidden';
 }
 
-function closeModal(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
-}
+function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+function handleSubscribe(e) { e.preventDefault(); const btn = e.target.querySelector('button'); btn.textContent = '✓ You\'re in!'; btn.style.background = '#4a8c5c'; e.target.querySelector('input').value = ''; }
 
-function closeModalDirect() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function handleSubscribe(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('button');
-  btn.textContent = '✓ You\'re in!';
-  btn.style.background = '#4a8c5c';
-  e.target.querySelector('input').value = '';
-}
-
-// Intersection Observer for fade-ins
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(el => {
-    if (el.isIntersecting) {
-      el.target.classList.add('visible');
-      observer.unobserve(el.target);
-    }
-  });
-}, { threshold: 0.1 });
-
+const observer = new IntersectionObserver((entries) => { entries.forEach(el => { if (el.isIntersecting) { el.target.classList.add('visible'); observer.unobserve(el.target); } }); }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
 
-// Escape key to close modal
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModalDirect();
-});
-
-// Init
 renderProfiles();
-
-// Observe new profile cards after render
-setTimeout(() => {
-  document.querySelectorAll('.profile-card.fade-in').forEach(el => observer.observe(el));
-}, 100);
+setTimeout(() => { document.querySelectorAll('.profile-card.fade-in').forEach(el => observer.observe(el)); }, 100);
 </script>
 </body>
 </html>
