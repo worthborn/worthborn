@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greg Abel & Berkshire — WorthBorn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0b;
+    --cream: #f0ebe0;
+    --gold: #c9a84c;
+    --gold-dim: rgba(201,168,76,0.18);
+    --muted: #6e6858;
+    --border: rgba(240,235,224,0.08);
+    --card: #151410;
+    --red: #8c2f2f;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--cream); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 4rem; background: rgba(14,13,11,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .logo { font-family: 'Libre Baskerville', serif; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.12em; color: var(--gold); text-decoration: none; }
+  .logo span { color: var(--cream); }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul a { color: var(--cream); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.55; transition: opacity 0.2s; }
+  nav ul a:hover, nav ul a.active { opacity: 1; color: var(--gold); }
+
+  /* NEWSPAPER-STYLE HERO */
+  .masthead { padding: 9rem 4rem 0; max-width: 1100px; margin: 0 auto; border-bottom: 3px double rgba(201,168,76,0.4); padding-bottom: 3rem; }
+  .masthead-meta { display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .issue-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+  .date-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); }
+  .breaking-badge { background: var(--red); color: white; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.2rem 0.6rem; }
+
+  .masthead h1 { font-family: 'Libre Baskerville', serif; font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 700; line-height: 1.1; max-width: 18ch; opacity: 0; animation: fadeUp 0.7s 0.3s forwards; }
+  .masthead h1 em { font-style: italic; color: var(--gold); }
+
+  .deck { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 1.15rem; color: rgba(240,235,224,0.65); max-width: 65ch; margin-top: 1.5rem; line-height: 1.55; opacity: 0; animation: fadeUp 0.7s 0.5s forwards; }
+
+  .byline-row { display: flex; align-items: center; gap: 2rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s 0.7s forwards; }
+  .byline { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.1em; }
+  .byline strong { color: var(--gold); }
+
+  /* CONTENT */
+  .article-body { max-width: 740px; margin: 0 auto; padding: 4rem 4rem 8rem; }
+  .article-body p { font-family: 'Libre Baskerville', serif; font-size: 1rem; line-height: 1.85; color: rgba(240,235,224,0.78); margin-bottom: 1.4rem; }
+  .article-body p strong { color: var(--cream); font-weight: 700; }
+
+  .section-head { margin: 3.5rem 0 1.5rem; }
+  .section-head .sh-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; display: block; }
+  .section-head h2 { font-family: 'Libre Baskerville', serif; font-size: clamp(1.5rem, 2.5vw, 2.2rem); font-weight: 700; line-height: 1.25; }
+  .section-head h2 em { color: var(--gold); font-style: italic; }
+
+  /* QUOTE BLOCK */
+  .letter-quote { margin: 3rem 0; background: var(--card); border: 1px solid rgba(201,168,76,0.2); border-left: 4px solid var(--gold); padding: 2rem 2.5rem; position: relative; }
+  .letter-quote::before { content: '"'; font-family: 'Libre Baskerville', serif; font-size: 6rem; color: var(--gold-dim); position: absolute; top: -1.5rem; left: 1.5rem; line-height: 1; }
+  .letter-quote p { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 1.15rem; color: rgba(240,235,224,0.9); margin: 0 0 0.8rem; line-height: 1.6; }
+  .letter-quote .attribution { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; color: var(--gold); }
+
+  /* KEY POINTS BOX */
+  .key-points { background: rgba(201,168,76,0.04); border: 1px solid rgba(201,168,76,0.15); padding: 2.5rem; margin: 3rem 0; }
+  .key-points .kp-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .kp-item { display: flex; gap: 1rem; align-items: flex-start; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+  .kp-item:last-child { border-bottom: none; }
+  .kp-num { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--gold); flex-shrink: 0; padding-top: 0.15em; }
+  .kp-item p { font-family: 'Libre Baskerville', serif; font-size: 0.9rem; color: rgba(240,235,224,0.75); margin: 0; line-height: 1.6; }
+  .kp-item p strong { color: var(--cream); }
+
+  /* CHAIN DIAGRAM */
+  .chain { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; margin: 3rem 0; }
+  .chain-node { background: var(--card); border: 1px solid rgba(201,168,76,0.25); padding: 1rem 1.5rem; text-align: center; min-width: 120px; }
+  .chain-node .cn-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; display: block; }
+  .chain-node .cn-text { font-family: 'Libre Baskerville', serif; font-size: 0.88rem; font-weight: 700; color: var(--cream); }
+  .chain-arrow { color: var(--gold); font-size: 1.2rem; padding: 0 0.3rem; opacity: 0.6; }
+
+  /* BERKSHIRE PRINCIPLES */
+  .principles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
+  .principle-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; transition: border-color 0.2s; }
+  .principle-card:hover { border-color: rgba(201,168,76,0.3); }
+  .pc-belief { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .principle-card h4 { font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .principle-card p { font-size: 0.85rem; color: rgba(240,235,224,0.55); line-height: 1.65; margin: 0; }
+
+  /* SELFWORTH APPLICATION */
+  .sw-application { background: linear-gradient(135deg, #1a1508, #0e0d0b); border: 1px solid rgba(201,168,76,0.2); padding: 3rem; margin: 3rem 0; }
+  .sw-application .swa-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .sw-application h3 { font-family: 'Libre Baskerville', serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+  .sw-application p { font-family: 'Libre Baskerville', serif; font-size: 0.92rem; color: rgba(240,235,224,0.75); line-height: 1.75; margin-bottom: 1rem; }
+
+  .person-profiles { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin: 3rem 0; }
+  .person-card { background: var(--card); border: 1px solid var(--border); padding: 1.5rem; text-align: center; }
+  .person-initial { width: 60px; height: 60px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); border-radius: 50%; font-family: 'Libre Baskerville', serif; font-size: 1.5rem; font-weight: 700; color: var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+  .person-card h4 { font-family: 'Libre Baskerville', serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .person-card .person-role { font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+  .person-card .core-belief { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 0.82rem; color: var(--gold); line-height: 1.5; }
+
+  .back-link { display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--gold); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'DM Mono', monospace; margin-bottom: 2rem; transition: gap 0.2s; }
+  .back-link:hover { gap: 0.8rem; }
+
+  footer { border-top: 1px solid var(--border); padding: 2.5rem 4rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  footer .footer-logo { font-family: 'Libre Baskerville', serif; font-weight: 700; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.12em; text-decoration: none; }
+  footer p { font-size: 0.78rem; color: var(--muted); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { display: none; }
+    .masthead { padding: 8rem 1.5rem 2rem; }
+    .article-body { padding: 3rem 1.5rem 5rem; }
+    .principles-grid { grid-template-columns: 1fr; }
+    .person-profiles { grid-template-columns: 1fr; }
+    .chain { flex-direction: column; }
+    .chain-arrow { transform: rotate(90deg); }
+    footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">WORTH<span>BORN</span></a>
+  <ul>
+    <li><a href="index.html#profiles">Profiles</a></li>
+    <li><a href="beliefs.html">Belief System</a></li>
+    <li><a href="berkshire.html" class="active">Abel & Berkshire</a></li>
+    <li><a href="index.html#newsletter">Newsletter</a></li>
+  </ul>
+</nav>
+
+<div class="masthead">
+  <div class="masthead-meta">
+    <span class="breaking-badge">Breaking</span>
+    <span class="issue-label">// WorthBorn Analysis</span>
+    <span class="date-label">March 1, 2026 — Published 24 hours after Abel's letter</span>
+  </div>
+  <h1>Greg Abel just told us <em>exactly</em> why culture beats strategy</h1>
+  <p class="deck">In his inaugural shareholder letter, Berkshire Hathaway's new CEO confirmed what Warren Buffett and Charlie Munger spent 60 years demonstrating: beliefs drive values, values build culture, culture generates everything else. Here is what he said — and what it means for anyone building anything.</p>
+  <div class="byline-row">
+    <span class="byline">Analysis by <strong>WorthBorn</strong></span>
+    <span class="byline">Source: <strong>Berkshire Hathaway 2025 Annual Report</strong> · Released Feb 28, 2026</span>
+    <span class="byline"><a href="https://berkshirehathaway.com/letters/letters.html" target="_blank" rel="noopener" style="color:var(--gold)">Read the full letter ↗</a></span>
+  </div>
+</div>
+
+<div class="article-body">
+  <a href="index.html" class="back-link">← Back to WorthBorn</a>
+
+  <p>On the morning of Saturday, February 28, 2026 — less than two months after officially assuming the CEO role — Greg Abel published his first annual letter to Berkshire Hathaway shareholders. The financial press focused on what most financial letters cover: earnings, buybacks, capital allocation, the cash pile.</p>
+
+  <p>But there was something else in the letter. Something that most analysts missed entirely, and that the WorthBorn framework is uniquely positioned to decode.</p>
+
+  <p><strong>Abel's letter was, at its core, a statement about belief architecture.</strong> About why the beliefs at the top of an organisation are more valuable than any asset on its balance sheet. About why Charlie Munger's famous line — "Greg will keep the culture" — was not a platitude but a precise description of the most important transition task in corporate history.</p>
+
+  <div class="letter-quote fade-in">
+    <p>Our culture is our most treasured asset, a call to maintain what defines Berkshire, and a challenge to ensure our culture continues.</p>
+    <span class="attribution">— Greg Abel, First Annual Shareholder Letter, February 28, 2026</span>
+  </div>
+
+  <p>He was repeating something Munger said in 2021. But he was also, in the language of belief architecture, making the most important statement a new CEO can make: <strong>the operating system is beliefs first, strategy second.</strong></p>
+
+  <!-- SECTION 1 -->
+  <div class="section-head fade-in">
+    <span class="sh-label">// What Abel Actually Said</span>
+    <h2>The five core commitments — and the <em>beliefs behind them</em></h2>
+  </div>
+
+  <p>The 18-page letter covered Berkshire's entire operating structure. But the load-bearing ideas — the beliefs that underpin everything else — can be extracted as five statements Abel made explicitly or implicitly. Each is a belief, expressed as a value, expressed as an operating principle.</p>
+
+  <div class="key-points fade-in">
+    <div class="kp-label">// The Five Berkshire Beliefs — Extracted from Abel's Letter</div>
+    <div class="kp-item"><span class="kp-num">01</span><p><strong>Financial conservatism as a moral position, not just a strategy.</strong> Abel committed to maintaining Berkshire's "fortress-like" balance sheet and near-record $373B cash position. The underlying belief: liquidity is not merely prudent — it is a statement about what you owe to the people who trust you. This is a belief about responsibility, not risk management.</p></div>
+    <div class="kp-item"><span class="kp-num">02</span><p><strong>Managerial autonomy as respect.</strong> Abel praised the subsidiary CEOs and signalled he would not micromanage them. The underlying belief: talented people perform best when they are trusted completely. This is Buffett's original belief, which became the Berkshire value of decentralisation, which became the operating framework of a $900B conglomerate.</p></div>
+    <div class="kp-item"><span class="kp-num">03</span><p><strong>Long-term compounding over short-term optics.</strong> No new dividend. No rushed capital deployment. The underlying belief: value is created over decades, not quarters, and any decision that sacrifices long-term compounding for short-term approval is a betrayal of shareholders. Buffett's belief. Now Abel's explicitly stated belief.</p></div>
+    <div class="kp-item"><span class="kp-num">04</span><p><strong>Culture is the competitive moat.</strong> Abel described culture — explicitly, repeatedly — as Berkshire's most treasured asset. Not the $373B cash. Not the Apple stake. Not BNSF. The belief system. This is the most sophisticated competitive analysis in the letter, and most headlines missed it entirely.</p></div>
+    <div class="kp-item"><span class="kp-num">05</span><p><strong>Integrity as the operating system.</strong> Abel wrote that he hopes to make Berkshire "stronger 20 years from now." The underlying belief: every decision you make is being evaluated by a future version of your stakeholders. This long moral horizon is only possible if you believe that integrity compounds — which is a belief, not a provable fact.</p></div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section-head fade-in">
+    <span class="sh-label">// The Chain of Causation</span>
+    <h2>How Buffett's beliefs became a <em>$900 billion culture</em></h2>
+  </div>
+
+  <p>What Abel is trying to preserve is not a strategy. Strategies change with circumstances. What he is trying to preserve is the belief system that <em>generates</em> correct strategies in response to changing circumstances. This is a subtle but profound distinction.</p>
+
+  <div class="chain fade-in">
+    <div class="chain-node"><span class="cn-label">Origin</span><span class="cn-text">Buffett's Core Beliefs</span></div>
+    <span class="chain-arrow">→</span>
+    <div class="chain-node"><span class="cn-label">Crystallise Into</span><span class="cn-text">Berkshire Values</span></div>
+    <span class="chain-arrow">→</span>
+    <div class="chain-node"><span class="cn-label">Shape</span><span class="cn-text">Operating Culture</span></div>
+    <span class="chain-arrow">→</span>
+    <div class="chain-node"><span class="cn-label">Generate</span><span class="cn-text">Decisions & Actions</span></div>
+    <span class="chain-arrow">→</span>
+    <div class="chain-node"><span class="cn-label">Compound Into</span><span class="cn-text">Extraordinary Results</span></div>
+  </div>
+
+  <p>Warren Buffett held a specific set of beliefs from his earliest days studying under Benjamin Graham at Columbia. He believed that the intrinsic value of a business was calculable, that emotional market participants created systematic mispricings, that the quality of management and business culture determined long-term outcomes more than near-term financials, and that patience was a competitive weapon that most investors were constitutionally incapable of deploying.</p>
+
+  <p>These beliefs, held with unusual consistency for seven decades, generated a set of values: intellectual honesty, long-term orientation, managerial trust, capital discipline. Those values generated a culture: decentralised management, minimal corporate overhead, no earnings guidance, no buybacks at full price. That culture generated the decisions that compounded Berkshire from a failing textile mill in 1965 to a $900B conglomerate today.</p>
+
+  <p><strong>Abel is not inheriting a strategy. He is inheriting — and committing to maintain — a belief system.</strong> And his letter is, read properly, a declaration that he understands the difference.</p>
+
+  <!-- SECTION 3 -->
+  <div class="section-head fade-in">
+    <span class="sh-label">// The Three Architects</span>
+    <h2>Buffett, Munger, Abel — three beliefs that <em>built one culture</em></h2>
+  </div>
+
+  <p>The Berkshire story is inseparable from three people whose core beliefs, while different in flavour, were convergent in their deepest structure. Understanding their individual belief architectures illuminates how a 390,000-person organisation maintains coherence across 60+ subsidiary businesses.</p>
+
+  <div class="person-profiles fade-in">
+    <div class="person-card">
+      <div class="person-initial">W</div>
+      <h4>Warren Buffett</h4>
+      <div class="person-role">Founder · Chairman</div>
+      <div class="core-belief">"A good business, bought at a fair price and held forever, is the simplest and most powerful compounding machine ever built."</div>
+    </div>
+    <div class="person-card">
+      <div class="person-initial">C</div>
+      <h4>Charlie Munger</h4>
+      <div class="person-role">Vice Chairman · 1978–2023</div>
+      <div class="core-belief">"All I want to know is where I'm going to die, so I'll never go there. Invert, always invert."</div>
+    </div>
+    <div class="person-card">
+      <div class="person-initial">G</div>
+      <h4>Greg Abel</h4>
+      <div class="person-role">CEO · 2026–present</div>
+      <div class="core-belief">"Our culture is our most treasured asset. I recognize how you want us to succeed together — and to do so in the right way."</div>
+    </div>
+  </div>
+
+  <p>What is striking about these three is not their similarity — Munger was intellectually aggressive and contrarian in ways Buffett was not; Abel is operationally hands-on in ways neither of his predecessors were. What is striking is the <strong>structural alignment of their belief systems</strong> at the level that matters: integrity as non-negotiable, patience as competitive advantage, people as the ultimate variable.</p>
+
+  <!-- SECTION 4 -->
+  <div class="section-head fade-in">
+    <span class="sh-label">// The Berkshire Blueprint</span>
+    <h2>Six Berkshire beliefs that <em>anyone building anything</em> can use today</h2>
+  </div>
+
+  <p>The Berkshire belief architecture is not proprietary to a $900B conglomerate. Every element of it is accessible to anyone building a business, a team, a family, or a life. The scale is different. The principles are identical.</p>
+
+  <div class="principles-grid fade-in">
+    <div class="principle-card">
+      <div class="pc-belief">Berkshire Belief #1</div>
+      <h4>Only deploy capital when the odds are genuinely in your favour</h4>
+      <p>Applied to your life: only commit your time, energy, and attention to things you genuinely believe in. Diffuse commitment produces diffuse results. Concentrated conviction produces compounding outcomes.</p>
+    </div>
+    <div class="principle-card">
+      <div class="pc-belief">Berkshire Belief #2</div>
+      <h4>Trust excellent people completely or don't hire them at all</h4>
+      <p>Applied to your life: the people you allow into your inner circle shape your beliefs more than almost any other variable. Surround yourself with people whose belief systems you want to absorb.</p>
+    </div>
+    <div class="principle-card">
+      <div class="pc-belief">Berkshire Belief #3</div>
+      <h4>The market is often wrong. Your judgment, tested against reality, may be right.</h4>
+      <p>Applied to your life: external validation — social, financial, professional — is a lagging indicator of value. Build your belief in your own worth on internal evidence, not market consensus.</p>
+    </div>
+    <div class="principle-card">
+      <div class="pc-belief">Berkshire Belief #4</div>
+      <h4>Integrity is not a cost — it is the highest-return investment available</h4>
+      <p>Applied to your life: every time you act with integrity when it's costly to do so, you are making a deposit in the most important account you have: your own self-respect. That account pays compound interest.</p>
+    </div>
+    <div class="principle-card">
+      <div class="pc-belief">Berkshire Belief #5</div>
+      <h4>Liquidity — optionality — is more valuable than deployment in most environments</h4>
+      <p>Applied to your life: preserving your energy, your attention, and your commitments for the opportunities that genuinely deserve them is a form of self-worth. Not every opportunity deserves a yes.</p>
+    </div>
+    <div class="principle-card">
+      <div class="pc-belief">Berkshire Belief #6</div>
+      <h4>Culture is built by the beliefs at the top, not the policies in the manual</h4>
+      <p>Applied to your life: the culture of every group you lead — family, team, community — reflects your deepest beliefs. If you want to change the culture, begin by examining the beliefs generating it.</p>
+    </div>
+  </div>
+
+  <!-- SELF-WORTH APPLICATION -->
+  <div class="sw-application fade-in">
+    <div class="swa-label">// The WorthBorn Lens</div>
+    <h3>What Berkshire really teaches us about self-worth</h3>
+    <p>The financial story of Berkshire Hathaway is well documented. The self-worth story is less often told.</p>
+    <p>Warren Buffett was rejected by Harvard. He was dismissed for decades by Wall Street for not owning technology stocks. He was called irrelevant in 2000. He was called reckless for holding cash in 2021. He held his beliefs in the face of every external verdict against them — not because he was arrogant, but because he had done the work to know his own mind.</p>
+    <p>That is the deepest definition of self-worth that WorthBorn has found across every profile on this site: <strong>the capacity to know your own mind, trust your own judgment, and hold your position in the face of external pressure</strong> — not indefinitely, not inflexibly, but long enough for the truth of your conviction to become visible.</p>
+    <p>Greg Abel's letter, published yesterday, is a declaration that he intends to do the same. Not to be Buffett. Not to replicate Buffett's decisions. But to maintain the belief architecture that made those decisions possible — and to build his own from the same foundation.</p>
+    <p>For everyone reading this who is not running a $900B conglomerate: the invitation is identical. Build your belief architecture with the same care Buffett built his. Know what you believe and why. Test it against reality, not against consensus. And hold it with the same patient conviction that turned a failing textile mill in Omaha into one of the greatest business stories in human history.</p>
+  </div>
+
+  <a href="index.html" class="back-link" style="margin-top:1rem;">← Explore all WorthBorn Profiles</a>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">WORTHBORN</a>
+  <p>Empowering humans to find their self-worth · 2026</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(el => { if (el.isIntersecting) { el.target.classList.add('visible'); observer.unobserve(el.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
