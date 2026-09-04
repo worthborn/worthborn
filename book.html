@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Book</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap">
+<style>
+  :root { --black:#0a0a08; --cream:#f5f0e8; --gold:#c9a84c; --gold-light:#e8d08a; --muted:#8a8478; --card:#13120f; --line:rgba(245,240,232,0.10); --green:#7fa66a; --amber:#d9a441; --red:#c05a4a; --blue:#7c9cc4; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--black);color:var(--cream);font-family:'DM Sans',system-ui,sans-serif;font-weight:300;line-height:1.6}
+  a{color:var(--gold-light)}
+  .wrap{max-width:1180px;margin:0 auto;padding:3rem 2rem 5rem}
+  .eyebrow{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+  h1{font-family:'Playfair Display',Georgia,serif;font-weight:900;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;margin:.7rem 0 .8rem;text-wrap:balance}
+  h1 em{font-style:italic;color:var(--gold)}
+  h2{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:1.5rem;margin:0 0 .3rem}
+  h2 em{font-style:italic;color:var(--gold)}
+  .lead{max-width:66ch;color:rgba(245,240,232,.72)}
+  .sub{color:var(--muted);max-width:74ch;margin-bottom:1rem;font-size:.9rem}
+  .tabs{display:flex;gap:.4rem;margin:2rem 0 1.4rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .tab{background:none;border:0;color:var(--muted);font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;padding:.7rem 1rem;cursor:pointer;border-bottom:2px solid transparent}
+  .tab[aria-selected="true"]{color:var(--gold);border-bottom-color:var(--gold)}
+  .tab:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .panel[hidden]{display:none}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1rem 0 1.6rem}
+  .stat{background:var(--card);border:1px solid var(--line);padding:.9rem 1rem}
+  .stat .k{font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold)}
+  .stat .v{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin:.2rem 0 .1rem;font-variant-numeric:tabular-nums}
+  .stat .d{font-size:.78rem;color:var(--muted)}
+  .tbl{overflow-x:auto;border:1px solid var(--line);background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.84rem}
+  th{font-family:'DM Mono',monospace;font-weight:500;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-align:left;padding:.75rem .65rem;border-bottom:1px solid rgba(201,168,76,.35);white-space:nowrap}
+  td{padding:.6rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:'DM Mono',monospace;font-size:.78rem;white-space:nowrap}
+  td.name{font-weight:500;color:var(--cream);white-space:nowrap}
+  td.name small{display:block;font-family:'DM Mono',monospace;font-weight:400;font-size:.66rem;color:var(--muted)}
+  .tier{font-family:'DM Mono',monospace;font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:.8rem .65rem .25rem}
+  .pill{display:inline-block;font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.12rem .45rem;border:1px solid;border-radius:2px;white-space:nowrap}
+  .core{color:var(--green);border-color:var(--green)} .armed{color:var(--amber);border-color:var(--amber)} .onepager{color:var(--blue);border-color:var(--blue)} .parked{color:var(--muted);border-color:var(--muted)} .folded{color:var(--red);border-color:var(--red)} .hold{color:var(--gold-light);border-color:var(--gold)}
+  .filters{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:0 0 1rem}
+  .chip{background:none;border:1px solid var(--line);color:var(--cream);font-family:'DM Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .7rem;cursor:pointer;border-radius:2px}
+  .chip[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+  .chip:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  input[type=search]{background:var(--card);border:1px solid var(--line);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:.9rem;padding:.45rem .7rem;min-width:220px;border-radius:2px}
+  .count{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--muted);margin-left:auto}
+  .how{margin-top:2.5rem;background:var(--card);border:1px solid rgba(201,168,76,.4);border-left:4px solid var(--gold);padding:1.2rem 1.4rem;max-width:80ch}
+  .how h2{font-size:1.2rem}
+  .how code{font-family:'DM Mono',monospace;color:var(--gold-light);font-size:.85rem}
+  .foot{margin-top:2rem;font-size:.76rem;color:var(--muted);max-width:84ch}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 2rem; background: rgba(10,10,8,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(245,240,232,0.08); } .logo { font-family: "Playfair Display", serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; } .logo span { color: var(--cream); } nav ul { list-style: none; display: flex; gap: 1.5rem; } nav ul a { color: var(--cream); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; } nav ul a:hover, nav ul a.active { opacity: 1; color: var(--gold); } .wrap { padding-top: 6.5rem; }</style>
+</head>
+<body>
+<nav><a href="index.html" class="logo">WORTH<span>BORN</span></a><ul><li><a href="book.html" class="active">The Book</a></li><li><a href="compounder-book.html">The Twelve</a></li><li><a href="sgx-portfolio.html">SGX Sleeve</a></li></ul></nav>
+
+<div class="wrap">
+  <div class="eyebrow">The cockpit · data as of 4 September 2026</div>
+  <h1>The <em>Book</em></h1>
+  <p class="lead">Three views of one thing: what you hold, what you should hold, and every name you have ever studied or owned, each with a status. Type <strong>"show my book"</strong> in any Claude chat to regenerate this page from the ledger files.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="p-port" id="t-port">1 · Portfolio as held</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-twelve" id="t-twelve">2 · The Twelve</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="p-ledger" id="t-ledger">3 · Every name, statused</button>
+  </div>
+
+  <!-- ===== 1 PORTFOLIO ===== -->
+  <section class="panel" id="p-port" role="tabpanel" aria-labelledby="t-port">
+    <div class="grid">
+      <div class="stat"><div class="k">IBKR NAV</div><div class="v">S$258k</div><div class="d">21 Aug Flex · cash S$137k (53%)</div></div>
+      <div class="stat"><div class="k">SRS</div><div class="v">~S$26k</div><div class="d">SGX only · 5 lines</div></div>
+      <div class="stat"><div class="k">CPF-OA stocks</div><div class="v">~S$28k</div><div class="d">earmarked for the condo · no new buys</div></div>
+      <div class="stat"><div class="k">Positions</div><div class="v">17 + 5 + 5</div><div class="d">target after The Twelve: 12 core + SGX satellites</div></div>
+    </div>
+    <h2>IBKR · U17020068 <em>as of 20 Aug 2026</em></h2>
+    <p class="sub">Live Flex feed values in SGD. Verdicts are the 21 Aug re-underwrite as amended by The Twelve on 4 Sep.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Name</th><th class="num">Qty</th><th class="num">Last</th><th class="num">Value S$</th><th class="num">Unrl</th><th class="num">% NAV</th><th>4 Sep decision</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Tencent<small>700</small></td><td class="num">500</td><td class="num">HK$451.40</td><td class="num">36,516</td><td class="num">−13%</td><td class="num">14.1%</td><td><span class="pill hold">Hold · trim to 10%</span></td></tr>
+        <tr><td class="name">Trip.com<small>9961</small></td><td class="num">200</td><td class="num">HK$361.60</td><td class="num">11,701</td><td class="num">−8%</td><td class="num">4.5%</td><td><span class="pill hold">Hold · gate 15 Sep</span></td></tr>
+        <tr><td class="name">Midea<small>300</small></td><td class="num">700</td><td class="num">HK$97.25</td><td class="num">11,014</td><td class="num">+9%</td><td class="num">4.3%</td><td><span class="pill hold">Hold · add &lt;85</span></td></tr>
+        <tr><td class="name">PDD<small>PDD</small></td><td class="num">90</td><td class="num">US$89.52</td><td class="num">10,224</td><td class="num">+5%</td><td class="num">4.0%</td><td><span class="pill core">Build to 5%</span></td></tr>
+        <tr><td class="name">Thakral<small>AWI</small></td><td class="num">5,000</td><td class="num">S$1.62</td><td class="num">8,100</td><td class="num">−7%</td><td class="num">3.1%</td><td><span class="pill hold">Hold · add &lt;1.45</span></td></tr>
+        <tr><td class="name">Crocs<small>CROX</small></td><td class="num">50</td><td class="num">US$123.09</td><td class="num">7,810</td><td class="num">+12%</td><td class="num">3.0%</td><td><span class="pill core">Add to 8% ≤115</span></td></tr>
+        <tr><td class="name">Adobe<small>ADBE</small></td><td class="num">20</td><td class="num">US$272.22</td><td class="num">6,909</td><td class="num">+20%</td><td class="num">2.7%</td><td><span class="pill armed">Add ≤250 post 10 Sep</span></td></tr>
+        <tr><td class="name">Berkshire B<small>BRK B</small></td><td class="num">8</td><td class="num">US$496.86</td><td class="num">5,044</td><td class="num">+4%</td><td class="num">2.0%</td><td><span class="pill folded">Fold</span></td></tr>
+        <tr><td class="name">Nippon Paint<small>4612.T</small></td><td class="num">500</td><td class="num">¥1,198.50</td><td class="num">4,758</td><td class="num">+19%</td><td class="num">1.8%</td><td><span class="pill folded">Fold</span></td></tr>
+        <tr><td class="name">PayPal<small>PYPL</small></td><td class="num">50</td><td class="num">US$62.30</td><td class="num">3,953</td><td class="num">+39%</td><td class="num">1.5%</td><td><span class="pill core">Add to 5% &lt;54 (condition)</span></td></tr>
+        <tr><td class="name">Honeywell<small>HON</small></td><td class="num">10</td><td class="num">US$218.32</td><td class="num">2,771</td><td class="num">−14%</td><td class="num">1.1%</td><td><span class="pill folded">Fold</span></td></tr>
+        <tr><td class="name">Alphabet<small>GOOGL</small></td><td class="num">6</td><td class="num">US$340.67</td><td class="num">2,594</td><td class="num">−4%</td><td class="num">1.0%</td><td><span class="pill folded">Fold → armed ~270</span></td></tr>
+        <tr><td class="name">Honeywell Aero<small>HONA</small></td><td class="num">10</td><td class="num">US$165.89</td><td class="num">2,105</td><td class="num">−24%</td><td class="num">0.8%</td><td><span class="pill folded">Fold</span></td></tr>
+        <tr><td class="name">Alibaba<small>9988</small></td><td class="num">100</td><td class="num">HK$126.20</td><td class="num">2,042</td><td class="num">−2%</td><td class="num">0.8%</td><td><span class="pill folded">Fold</span></td></tr>
+        <tr><td class="name">Prada<small>1913</small></td><td class="num">300</td><td class="num">HK$41.24</td><td class="num">2,002</td><td class="num">+6%</td><td class="num">0.8%</td><td><span class="pill folded">Fold → armed &lt;38</span></td></tr>
+        <tr><td class="name">TFG<small>TFG</small></td><td class="num">100</td><td class="num">US$13.30</td><td class="num">1,688</td><td class="num">−25%</td><td class="num">0.7%</td><td><span class="pill folded">Fold</span></td></tr>
+        <tr><td class="name">Molina<small>MOH</small></td><td class="num">5</td><td class="num">US$196.94</td><td class="num">1,250</td><td class="num">+3%</td><td class="num">0.5%</td><td><span class="pill folded">Fold</span></td></tr>
+        <tr><td class="name">Optimus (workout)<small>OPTU</small></td><td class="num">90</td><td class="num">US$0.87</td><td class="num">100</td><td class="num">−22%</td><td class="num">0.0%</td><td><span class="pill hold">Hold to expiry</span></td></tr>
+        <tr><td class="name">Cash<small>SGD</small></td><td class="num"></td><td class="num"></td><td class="num">137,196</td><td class="num"></td><td class="num">53.1%</td><td><span class="pill core">Deploy per The Twelve</span></td></tr>
+      </tbody></table></div>
+
+    <h2 style="margin-top:2rem">SRS · Tiger <em>SGX only</em></h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Name</th><th class="num">Shares</th><th class="num">Price (date)</th><th class="num">≈ Value S$</th><th>4 Sep decision</th></tr></thead>
+      <tbody>
+        <tr><td class="name">OCBC<small>O39</small></td><td class="num">300</td><td class="num">S$30.81 (18 Aug)</td><td class="num">9,240</td><td><span class="pill folded">Sell &gt;30 → Azeus</span></td></tr>
+        <tr><td class="name">Boustead<small>F9D</small></td><td class="num">3,700</td><td class="num">S$1.86 (late Aug)</td><td class="num">6,880</td><td><span class="pill hold">Hold · no add</span></td></tr>
+        <tr><td class="name">Haw Par<small>H02</small></td><td class="num">400</td><td class="num">S$15.17 (18 Aug)</td><td class="num">6,070</td><td><span class="pill core">Hold · add &lt;13.50</span></td></tr>
+        <tr><td class="name">Sheng Siong<small>OV8</small></td><td class="num">500</td><td class="num">S$3.25 (7 Aug)</td><td class="num">1,625</td><td><span class="pill folded">Sell</span></td></tr>
+        <tr><td class="name">Straits Trading<small>S20</small></td><td class="num">590</td><td class="num">S$1.61 (18 Aug)</td><td class="num">950</td><td><span class="pill folded">Sell first</span></td></tr>
+        <tr><td class="name">Cash</td><td class="num"></td><td class="num"></td><td class="num">~800</td><td><span class="pill core">→ Azeus ladder</span></td></tr>
+      </tbody></table></div>
+
+    <h2 style="margin-top:2rem">CPF-OA · Tiger <em>earmarked, no new buys</em></h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Name</th><th class="num">Shares</th><th class="num">Price (date)</th><th class="num">≈ Value S$</th><th>4 Sep decision</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Haw Par<small>H02</small></td><td class="num">500</td><td class="num">S$15.17</td><td class="num">7,585</td><td><span class="pill core">Keep</span></td></tr>
+        <tr><td class="name">Boustead<small>F9D</small></td><td class="num">4,000</td><td class="num">S$1.86</td><td class="num">7,440</td><td><span class="pill hold">Keep</span></td></tr>
+        <tr><td class="name">Thakral<small>AWI</small></td><td class="num">4,500</td><td class="num">S$1.62</td><td class="num">7,290</td><td><span class="pill hold">Keep</span></td></tr>
+        <tr><td class="name">Hong Leong Asia<small>H22</small></td><td class="num">1,200</td><td class="num">S$3.16</td><td class="num">3,790</td><td><span class="pill folded">Sell → OA cash</span></td></tr>
+        <tr><td class="name">Far East Orchard<small>O10</small></td><td class="num">2,000</td><td class="num">S$1.08</td><td class="num">2,160</td><td><span class="pill folded">Sell → OA cash</span></td></tr>
+      </tbody></table></div>
+  </section>
+
+  <!-- ===== 2 THE TWELVE ===== -->
+  <section class="panel" id="p-twelve" role="tabpanel" aria-labelledby="t-twelve" hidden>
+    <p class="sub">The recommendation, decided 4 Sep, ranked on three things: valuation (earnings or FCF yield), return on capital, and earnings or free-cash-flow growth. Figures are as sourced this week; "—" means the filing number is not yet on file and the FinancialReports connector (needs re-authorising) fills it next.</p>
+    <div class="tbl"><table>
+      <thead><tr><th class="num">Rank</th><th>Name</th><th class="num">Valuation</th><th class="num">Return on capital</th><th class="num">Earnings / FCF growth</th><th>Why this rank</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td class="name">Azeus<small>BBW</small></td><td class="num">~14x · 6.9% yield · 5.8% FCF yield</td><td class="num">ROIC 56.9% · ROE 63.7%</td><td class="num">forward book +23.5% · 5-yr rev CAGR +21.3%</td><td>Cheapest per unit of return in the book. Capped only by float and the CERKS dispute.</td></tr>
+        <tr><td class="num">2</td><td class="name">Anta<small>2020.HK</small></td><td class="num">~12x</td><td class="num">OP margin 27% (1H26) · GM 62%</td><td class="num">OP +16.1% · underlying profit +12.9%</td><td>Quality at a market multiple, net cash RMB 39bn, strike fired.</td></tr>
+        <tr><td class="num">3</td><td class="name">Adobe<small>ADBE</small></td><td class="num">16x TTM</td><td class="num">—</td><td class="num">—</td><td>Highest-ROC franchise in the book by nature of the model; numbers to be pulled from the 10 Sep print.</td></tr>
+        <tr><td class="num">4</td><td class="name">Crocs<small>CROX</small></td><td class="num">~7x P/FCF · 2Q FCF US$331m</td><td class="num">—</td><td class="num">rev +2.6% · EPS rebound to US$4.13 · guide raised</td><td>Cash yield does the work; growth is low single digit.</td></tr>
+        <tr><td class="num">5</td><td class="name">PDD<small>PDD</small></td><td class="num">8.7x · cash US$67bn</td><td class="num">—</td><td class="num">NP −12% · OCF +19%</td><td>Statistically the cheapest; opacity caps size at 5%.</td></tr>
+        <tr><td class="num">6</td><td class="name">PayPal<small>PYPL</small></td><td class="num">11x · adj FCF US$6.4bn (~12% yield)</td><td class="num">—</td><td class="num">—</td><td>FCF yield with buybacks; growth is the open question, hence the branded-TPV condition.</td></tr>
+        <tr><td class="num">7</td><td class="name">Tencent<small>0700.HK</small></td><td class="num">16x</td><td class="num">—</td><td class="num">rev +11% · non-IFRS profit +9% · FCF negative on capex</td><td>Compounding at a fair price; capex is the swing.</td></tr>
+        <tr><td class="num">8</td><td class="name">Sirius XM<small>SIRI</small></td><td class="num">~7x P/FCF · FCF guide US$1.375bn</td><td class="num">—</td><td class="num">guide raised US$25m; growth flat</td><td>Pure cash yield, levered; no growth assumed.</td></tr>
+        <tr><td class="num">9</td><td class="name">Midea<small>0300.HK</small></td><td class="num">14x · 5–6% yield</td><td class="num">—</td><td class="num">1Q NP +2%</td><td>Fair value, held for the yield; add only below HK$85.</td></tr>
+        <tr><td class="num">10</td><td class="name">Haw Par<small>H02</small></td><td class="num">0.71x NAV · 2.6% yield</td><td class="num">ROE 6.3% (holdco)</td><td class="num">1H26 NP −25%</td><td>Not a compounder: a discount with Tiger Balm free. Bank sleeve.</td></tr>
+        <tr><td class="num">11</td><td class="name">Hongkong Land<small>H78</small></td><td class="num">0.57x NAV</td><td class="num">—</td><td class="num">underlying profit +11%</td><td>Discount plus buyback mechanism, not return on capital.</td></tr>
+        <tr><td class="num">12</td><td class="name">Trip.com<small>9961.HK</small></td><td class="num">—</td><td class="num">—</td><td class="num">guide +3–8%</td><td>Provisional; results 15 Sep decide.</td></tr>
+      </tbody></table></div>
+    <p class="sub" style="margin-top:1.2rem">For contrast, the names that fail the same lens: Sheng Siong has ROIC 45.6% but EPS growth 3.9% at 31x; DBS ROE 17.5% at 3.06x book; iFAST ROE 27.2% and profit +35% at 23x, which is why it is a starter, not core. The full table by zone follows.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>#</th><th>Name</th><th>Why</th><th class="num">Price (date)</th><th class="num">Multiple</th><th class="num">Now → Target</th><th>Verdict · level</th></tr></thead>
+      <tbody>
+        <tr><td colspan="7" class="tier">China · Hong Kong</td></tr>
+        <tr><td class="num">1</td><td class="name">Tencent<small>0700.HK</small></td><td>2Q26 revenue +11%, non-IFRS profit +9%; AI capex is the option</td><td class="num">HK$457–479 (late Aug)</td><td class="num">16x</td><td class="num">14.1 → 10%</td><td><span class="pill hold">Hold · trim</span> add &lt;440</td></tr>
+        <tr><td class="num">2</td><td class="name">Anta<small>2020.HK</small></td><td>1H26 revenue +12.9%, OP +16.1%, underlying profit +12.9%; net cash RMB 39bn</td><td class="num">HK$75.85 (3 Sep)</td><td class="num">~12x</td><td class="num">0 → 8%</td><td><span class="pill core">Buy now</span> strike fired</td></tr>
+        <tr><td class="num">3</td><td class="name">Midea<small>0300.HK</small></td><td>Fair-value cyclical, ~14x ex-float, 5–6% yield</td><td class="num">HK$95.50 (17 Aug)</td><td class="num">14x</td><td class="num">4.3 → 5%</td><td><span class="pill hold">Hold</span> add &lt;85</td></tr>
+        <tr><td class="num">4</td><td class="name">PDD<small>PDD</small></td><td>US$67bn cash; OCF +19%; three value greats adding</td><td class="num">US$88–91 (25 Aug)</td><td class="num">8.7x</td><td class="num">4 → 5%</td><td><span class="pill core">Build</span> cap 5%</td></tr>
+        <tr><td class="num">5</td><td class="name">Trip.com<small>9961.HK</small></td><td>Held on evidence gate; results 15 Sep</td><td class="num">HK$361.60 (20 Aug)</td><td class="num">—</td><td class="num">4.5%</td><td><span class="pill hold">Hold</span> gate; else Chubb</td></tr>
+        <tr><td colspan="7" class="tier">United States</td></tr>
+        <tr><td class="num">6</td><td class="name">Crocs<small>CROX</small></td><td>Record 2Q26, FCF US$331m in the quarter, guide raised</td><td class="num">US$115.3 (early Sep)</td><td class="num">~7x FCF</td><td class="num">3 → 8%</td><td><span class="pill core">Add</span> ≤115</td></tr>
+        <tr><td class="num">7</td><td class="name">Adobe<small>ADBE</small></td><td>Highest ROIC in the book; print 10 Sep</td><td class="num">US$279.79</td><td class="num">16x</td><td class="num">2.7 → 5%</td><td><span class="pill armed">Add ≤250</span> after print</td></tr>
+        <tr><td class="num">8</td><td class="name">PayPal<small>PYPL</small></td><td>Adj FCF US$6.4bn on ~US$52bn cap</td><td class="num">US$53.66</td><td class="num">11x</td><td class="num">1.5 → 5%</td><td><span class="pill core">Add &lt;54</span> if branded TPV ≥2%</td></tr>
+        <tr><td class="num">9</td><td class="name">Sirius XM<small>SIRI</small></td><td>FCF guide US$1.375bn raised; Berkshire 35%</td><td class="num">US$27.88 (Jun, stale)</td><td class="num">7x FCF</td><td class="num">0 → 5%</td><td><span class="pill core">Buy ≤30</span> refresh price</td></tr>
+        <tr><td colspan="7" class="tier">Singapore</td></tr>
+        <tr><td class="num">10</td><td class="name">Azeus<small>BBW · SRS</small></td><td>SaaS, 76% GM, negative invested capital, forward book +23.5%</td><td class="num">S$10.35</td><td class="num">~14x · 6.9%</td><td class="num">0 → 5%</td><td><span class="pill core">Buy</span> ≤11.50</td></tr>
+        <tr><td class="num">11</td><td class="name">Hongkong Land<small>H78</small></td><td>0.57x NAV, US$492m buybacks, gearing 11%</td><td class="num">US$8.37</td><td class="num">0.57x NAV</td><td class="num">0 → 5%</td><td><span class="pill core">Buy</span> ≤9.00</td></tr>
+        <tr><td class="num">12</td><td class="name">Haw Par<small>H02</small></td><td>UOB stake at a third off + S$790m cash + Tiger Balm free</td><td class="num">S$15.17 (18 Aug)</td><td class="num">0.71x NAV</td><td class="num">~5%</td><td><span class="pill hold">Hold</span> add &lt;13.50</td></tr>
+      </tbody></table></div>
+    <p class="sub" style="margin-top:1rem">Fold eight: BRK.B, Nippon Paint, HON + HONA, Alphabet, Alibaba, Prada, TFG, Molina. Money: ≈S$95k deploys now, ≈S$65k held for Adobe, Trip.com and the bench. Next move: Anta, Monday 7 Sep, 1,000 shares limit HK$77.</p>
+  </section>
+
+  <!-- ===== 3 LEDGER ===== -->
+  <section class="panel" id="p-ledger" role="tabpanel" aria-labelledby="t-ledger" hidden>
+    <p class="sub">Every name from both IBKR accounts (2018–2026), the 2025–26 winners and losers, the SGX book and the studied leads. One status each. Realized ink is in the account's base currency. "Read" is as found 20 Aug–4 Sep 2026.</p>
+    <div class="filters" id="filters">
+      <button class="chip" aria-pressed="true" data-f="all">All</button>
+      <button class="chip" aria-pressed="false" data-f="core">Core</button>
+      <button class="chip" aria-pressed="false" data-f="armed">Armed</button>
+      <button class="chip" aria-pressed="false" data-f="onepager">One-pager</button>
+      <button class="chip" aria-pressed="false" data-f="parked">Parked</button>
+      <button class="chip" aria-pressed="false" data-f="folded">Folded</button>
+      <input type="search" id="q" placeholder="Search name or ticker" aria-label="Search names">
+      <span class="count" id="count"></span>
+    </div>
+    <div class="tbl"><table id="ledger">
+      <thead><tr><th>Status</th><th>Name</th><th>Market</th><th>Realized ink</th><th>Read</th><th>Level / trigger</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+
+  <div class="how">
+    <h2>How to get this page again</h2>
+    <p>Type <code>show my book</code> in any Claude chat. The page is rebuilt from three files in the office inbox: <code>ibkr-live.md</code> (positions, live Flex), <code>THE TWELVE</code> (recommendation), <code>MASTER LEDGER</code> (every name). Type a fill or a new idea and the next rebuild carries it. Nothing here is edited by hand.</p>
+  </div>
+  <p class="foot">Sources: ibkr-live 21 Aug · manual-balances 17 Aug · srs-portfolio 4 May · The Twelve and Master Ledger 4 Sep · public price and results summaries 20 Aug–4 Sep 2026. Verify every price before transacting. Two rows unresolved: the 2023 BRe winner logged as 2985.HK has no name on file; Albertsons' price needs verification.</p>
+</div>
+
+<script>
+(function(){
+  var L=[
+  // status, name, ticker, market, ink, read, level
+  ["core","Tencent","700","HK","+US$244 (WP) · +S$718 (BRe)","HK$457–479, 16x","trim to 10%; add <440"],
+  ["core","Anta Sports","2020","HK","—","HK$75.85, ~12x","BUY — strike fired"],
+  ["core","Midea","000333 / 300","HK","+US$117 · +S$1,895","HK$95.50, 14x","add <85"],
+  ["core","PDD","PDD","US","−US$1,077 · −S$2.1k/−2.9k","US$88–91, 8.7x","build to 5% cap"],
+  ["core","Trip.com","9961 / TCOM","HK","—","HK$361.60","gate 15 Sep"],
+  ["core","Crocs","CROX","US","+US$128","US$115.3, ~7x FCF","add ≤115"],
+  ["core","Adobe","ADBE","US","—","US$279.79, 16x","add ≤250 post 10 Sep"],
+  ["core","PayPal","PYPL","US","+S$598 · −S$1.4k","US$53.66, 11x","add <54 if branded TPV ≥2%"],
+  ["core","Sirius XM","SIRI","US","—","~US$28, 7x FCF (Jun)","buy ≤30"],
+  ["core","Azeus Systems","BBW","SGX","—","S$10.35, ~14x, 6.9% yield","SRS ladder ≤11.50"],
+  ["core","Hongkong Land","H78","SGX (USD)","—","US$8.37, 0.57x NAV","buy ≤9"],
+  ["core","Haw Par","H02","SGX","−US$1 · +S$726 · live +62–82%","S$15.17, 0.71x NAV","add <13.50; trim >21"],
+  ["armed","Pop Mart","9992","HK","—","HK$154","90–105"],
+  ["armed","NetEase","NTES","US","—","US$121–127, 16x","<100"],
+  ["armed","JD.com","JD / 9618","HK","—","8.6x","<US$29 starter"],
+  ["armed","Alphabet","GOOGL","US","+US$164 · +S$12,448","US$359, 16.7x","~265–270"],
+  ["armed","Intuit","INTU","US","—","—","<300"],
+  ["armed","Fairfax","FFH","CA","+S$891","C$2,272, 1.29x BV","≤1.2x ≈ C$2,110"],
+  ["armed","Chubb","CB","US","—","US$347, 12x","slot-gated starter"],
+  ["armed","UOB","U11","SGX","—","S$40.79, 1.37x","≤36"],
+  ["armed","Vicom","WJP","SGX","—","S$1.83","≤1.70"],
+  ["armed","Prada","1913","HK","live 0.8% → fold","HK$40, 14x","<38 at size"],
+  ["armed","Zoetis","ZTS","US","—","—","~77–80"],
+  ["armed","SBM Offshore","SBMO","NL","—","€34.78","€34–38; re-verify Apr thesis"],
+  ["armed","Brookfield Corp","BN / BAM","US","+US$340","US$39.76","≤43.88; re-verify"],
+  ["armed","Markel","MKL","US","+S$363","~US$1,940, 1.53x BV","needs BV growth ≥15%"],
+  ["armed","Thakral","AWI","SGX","live","S$1.62, 0.67x NAV","add <1.45; trim >2.10"],
+  ["armed","Boustead","F9D","SGX","live +257%","S$1.86","<1.55 or Geo OP >S$48m"],
+  ["armed","Sheng Siong","OV8","SGX","live SRS","S$3.25, 31x","sell >2.80; buy <2.20"],
+  ["armed","OCBC","O39","SGX","+S$33.9k ('26) · live SRS","S$30.81, 2.24x","sell >30; add 20–24"],
+  ["armed","DBS","D05","SGX","+S$2,281","S$75.56, 3.06x","<55"],
+  ["armed","Mitsui / Sumitomo","8031 / 8053","JP","+S$578 / +S$532 · +6.5k/+8.4k","~16x / re-rated","BRe holds; re-arm <10x"],
+  ["armed","Marubeni","8002","JP","—","14.2x + buyback","<10x"],
+  ["onepager","Meituan","3690","HK","−S$168","HK$133; 2Q OP swing +CNY 2.7bn","delivery-war inflection"],
+  ["onepager","Ally","ALLY","US","+S$5,396 · −4.3k/+9.5k","US$43.59, 1.00x TBV","at tangible book"],
+  ["onepager","Green Brick","GRBK","US","+S$6,482","US$70.88, fwd 12x","homebuilder trough (vs NVR)"],
+  ["onepager","NVR","NVR","US","+US$211","~14.7x","buyback machine"],
+  ["onepager","Lululemon","LULU","US","−S$7.5k ('26)","US$99.25, 9.7x, 8-yr low","scar at single digit"],
+  ["onepager","Nojima","7419","JP","+S$204","7.8x","Japan value"],
+  ["onepager","Toyota","7203","JP","+S$124","¥3,133, 9.5x, ~1x BV","¥3.2T buyback"],
+  ["onepager","Showa Paxxs","3954","JP","+US$965","¥3,230, 9.6x","past winner, single digit"],
+  ["onepager","Sanwa Holdings","5929","JP","+US$258","¥3,617, 13x","own research; quality"],
+  ["onepager","Ping An","2318 / 601318","HK","−US$70 / +US$410","HK$56.80, 6.7x","insurer lens needs P/B"],
+  ["onepager","FIS","FIS","US","+S$306","US$42.28, 6.2x / 6.9x fwd; outlook cut","Shape B or trap"],
+  ["onepager","Kweichow Moutai","600519","CN","—","¥1,309, 18–20x","Duan's anchor"],
+  ["onepager","Nintendo","7974","JP","—","¥8,838, ~21.6x","arm at 18–20x trough"],
+  ["onepager","M-up","3661","JP","—","18.5x headline","strip cash"],
+  ["onepager","IFS Capital","I49","SGX","+S$17.3k ('25) +7.4k ('26)","S$0.18, 4.35% yield","via 1H26 filing only"],
+  ["onepager","MUFG","8306","JP","+S$714","¥3,541, 12x","low priority"],
+  ["onepager","Albertsons","ACI","US","−S$107","US$13.53? 12x / 8.2x fwd (verify)","levered grocer; low priority"],
+  ["onepager","Ingles Markets","IMKTA","US","+US$646","US$86.71, 15.5x, 0.76x BV","asset-rich; low priority"],
+  ["onepager","Progressive","PGR","US","—","US$212, 10.5x; Jun CR 90%","cyclical-peak question"],
+  ["onepager","DaVita","DVA","US","+S$8,052","US$179, 15x","re-look <150"],
+  ["onepager","Accenture","ACN","US","—","US$188, 12.8x fwd","AI-adoption tax"],
+  ["onepager","Dai Nippon Printing","7912","JP","—","12.6x, Elliott","activist catalyst"],
+  ["onepager","iFAST","AIY","SGX","—","S$8.86, 23x, ROE 27%","starter after one-pager"],
+  ["onepager","Kimly","1D0","SGX","—","~S$0.395, 14x, 5% yield","starter after one-pager"],
+  ["onepager","Wee Hur","E3B","SGX","—","S$0.72–0.80, ~10x","starter after one-pager"],
+  ["onepager","Delfi","P34","SGX","—","S$0.89–1.01","one-pager"],
+  ["onepager","Micro-Mechanics","5DD","SGX","—","S$2.68, 23x","watch ≤2.20"],
+  ["onepager","Leon's Furniture","LNF","CA","—","C$24.32, 10.5x","thesis BUY; outside zones"],
+  ["onepager","CMCDI","133","HK","—","—","Moonshot discount; catalyst check"],
+  ["onepager","Makino Milling","6135","JP","—","—","space/CNC lead"],
+  ["onepager","SK Telecom","SKM","KR","—","—","SOTP lead"],
+  ["parked","Dell","DELL","US","missed (logged)","US$492, 34x / 17x fwd","<12x fwd"],
+  ["parked","Meta","META / FB","US","+US$232 · +S$11,483","US$614, ~20x","high-300s/low-400s"],
+  ["parked","Berkshire Hathaway","BRK B","US","+US$14,215 · live 2% → fold","US$508","≤1.3x BV"],
+  ["parked","UnitedHealth","UNH","US","BRe general","US$399, 17.8x fwd","<330"],
+  ["parked","Merck","MRK","US","+5.8k ('26)","fwd 12x after +84%","<10x fwd"],
+  ["parked","Xiaomi","1810","HK","+S$3,916","HK$27–32, fwd 24x","<15x"],
+  ["parked","Value Partners","806","HK","−S$912","HK$2.57, +80% yr","none"],
+  ["parked","Blackstone","BX","US","+US$14 · +S$5,093","US$137.68, 30.7x","FRE multiple <20x"],
+  ["parked","ICE","ICE","US","+S$50","US$164.59, 22x","<17x"],
+  ["parked","eBay","EBAY","US","+S$1,646","US$107, 22x","<14x"],
+  ["parked","Floor & Decor","FND","US","+US$3 · +S$1,101","US$47.95, 22x","<15x"],
+  ["parked","Procter & Gamble","PG","US","+S$957","US$147, 22x","none"],
+  ["parked","Citigroup","C","US","+S$4,689","1.32x TBV","<1.0x TBV"],
+  ["parked","Bank of America","BAC","US","+S$3,056","2.2x TBV","<1.3x TBV"],
+  ["parked","Wells Fargo","WFC","US","—","US$89.21","none"],
+  ["parked","WTW","WTW","US","+S$647","US$340, 20.7x","<15x"],
+  ["parked","Phillips 66","PSX","US","+S$22","US$257, 14x","none"],
+  ["parked","Occidental","OXY","US","−1.3k","US$60, 9–18x","none"],
+  ["parked","Shell","SHEL","UK","+S$831","US$93, 3.25% yield","none"],
+  ["parked","PetroChina","857","HK","+S$4,903","11x, ~6% yield","yield >8%"],
+  ["parked","Sinopec","386","HK","+S$93","10.5x, ~5% yield","yield >8%"],
+  ["parked","Fluor","FLR","US","−1.3k","US$56, fwd 15x","none"],
+  ["parked","Alpha Metallurgical","AMR","US","+6.7k ('25)","US$227, 445x TTM","single-digit on trough"],
+  ["parked","Warrior Met Coal","HCC","US","+6.2k ('25)","US$108, 28x","single-digit on trough"],
+  ["parked","TSMC","TSM","US","−US$0.4k · +S$2,000","~31x","<20x"],
+  ["parked","Tower Semiconductor","TSEM","US","+S$2,837","98x / 56x fwd","none"],
+  ["parked","Hon Hai","2317","TW","+S$119","TWD 253","none"],
+  ["parked","POSCO","PKX","KR","+US$2","US$57.77, 19x","none"],
+  ["parked","Micron","MU","US","+US$298","fwd 6–13x (disputed)","outside circle"],
+  ["parked","Louisiana-Pacific","LPX","US","+S$3,982","US$72.49, 35x","<12x"],
+  ["parked","RS Technologies","3445","JP","−US$292","¥7,250","none"],
+  ["parked","BML","4694","JP","−US$277 · −S$1,326","¥3,670","none"],
+  ["parked","Motorpoint","MOTR","UK","+US$48","126.5p, 15–26x","none"],
+  ["parked","Bilibili","BILI","US","+US$256","US$17.14, 28x","none"],
+  ["parked","Unilever","ULVR","UK","—","4,743p, 16.5x","none"],
+  ["parked","Constellation Software","CSU","CA","—","C$3,047, 67x","none"],
+  ["parked","Coupang","CPNG","US","—","US$16, fwd 48x","none"],
+  ["parked","2985.HK (unnamed)","2985","HK","+6.3k ('23)","—","identify first"],
+  ["parked","Small BRe legs","9478 / UD2 / S35 / 1F3","—","≤+S$21","—","none"],
+  ["folded","Credit Suisse","CS","CH","−S$42,208","THE scar","never"],
+  ["folded","MCHI","MCHI","US","−US$4,238","mandate deviation","never"],
+  ["folded","Bayer","BAYNd","DE","−S$5,174","value trap","never"],
+  ["folded","Alibaba","9988","HK","−US$3,652 · live 0.8%","HK$110, 19x","fold"],
+  ["folded","Viasat","VSAT","US","−S$3,294","outside zones","never"],
+  ["folded","Noah","6686","HK","−S$2,821","outside circle","never"],
+  ["folded","Sea","SE","US","−US$2,618","growth unwind","never"],
+  ["folded","Liberty SiriusXM tracker","LSXMK","US","−S$2,491","tracker complexity","never"],
+  ["folded","Kennedy-Wilson","KW","US","−S$1,867","levered RE","never"],
+  ["folded","Dongfeng","489","HK","−S$1,880","HK cheap, no quality","never"],
+  ["folded","MCC","1618","HK","−S$1,564","HK cheap, no quality","never"],
+  ["folded","Giordano","709","HK","−S$1,399","HK$1.51","never"],
+  ["folded","Playmates Toys","869","HK","−US$577","HK$0.49, loss warning","never"],
+  ["folded","690D arb","690D","SGX","−US$1,464","soft workout","never"],
+  ["folded","Kenvue","KVUE","US","−US$783","safe, not cheap","never"],
+  ["folded","J&J / Pfizer / Abbott / ADM / Kraft Heinz","JNJ PFE ABT ADM KHC","US","−S$1,612 cum.","defensives without cheapness","never"],
+  ["folded","US Bancorp","USB","US","−S$432","—","never"],
+  ["folded","Intel","INTC","US","−US$13 · −S$495","—","never"],
+  ["folded","Liberty Global","LBTYK","US","−S$681","US$10.15, loss-making","never"],
+  ["folded","COSCO Shipping","1919","HK","−S$798","3.5x, 14.5% yield, peak cycle","never"],
+  ["folded","Qifu / Qfin","QFIN","US","−4.2k/−6.0k","US$12.36, P/E 2.2","China-cheap-outside-terrain shape"],
+  ["folded","TripAdvisor","TRIP","US","−5.2k ('26)","US$9.46","never"],
+  ["folded","Robert Half","RHI","US","−2.8k ('26)","29x","never"],
+  ["folded","US Steel","X","US","−US$263","acquired","closed"],
+  ["folded","Grab","GRAB","US","−US$262","US$3.43, 24x","never"],
+  ["folded","GLD / GAGV / MUA / EBS / CMRX","various","US","−US$1,112 cum.","EBS US$4.59","never"],
+  ["folded","Razer","1337","HK","−US$33","privatised","closed"],
+  ["folded","Oxley","5UX","SGX","−S$15","net debt S$1.2bn","never"],
+  ["folded","InnoTek","M14","SGX","+S$221","earnings −66%","never"],
+  ["folded","TFG","TFG","US","−S$101 · live −25%","exit","fold"],
+  ["folded","ATVI / BKI / G07 / AVM / PGRU / TSEM arb / S35 / Aspen","workouts","various","~+S$7k cum.","done, undefeated","closed"],
+  ["folded","Great Eastern","G07","SGX","+S$3,581 (tender)","delisting failed, no rebid","closed"],
+  ["folded","Japfa","UD2","SGX","+S$1,488","privatised S$0.62 Jun 2025","closed"],
+  ["folded","Seritage","SRG","US","+US$1,576","liquidation residual","closed"],
+  ["folded","BYD","002594","CN","+US$769","FCF negative","pass"],
+  ["folded","Nippon Paint","4612","JP","live 1.8% +19%","¥1,195, 14x","fold"],
+  ["folded","Honeywell + Honeywell Aero","HON HONA","US","live −14% / −24%","fwd 26.6x / US$16bn debt","fold"],
+  ["folded","Molina","MOH","US","live 0.5%","fwd 27x","fold"],
+  ["folded","Hong Leong Asia","H22","SGX","live CPF","S$3.16","sell → OA cash"],
+  ["folded","Straits Trading","S20","SGX","live SRS","S$1.61","sell first"],
+  ["folded","Far East Orchard","O10","SGX","live CPF","S$1.08","sell → OA cash"],
+  ["folded","Twitter / SGOV / TVV / BLR / 3306","misc","—","≤±US$50","—","closed"]
+  ];
+  var labels={core:"Core",armed:"Armed",onepager:"One-pager",parked:"Parked",folded:"Folded"};
+  var tb=document.querySelector('#ledger tbody'), q=document.getElementById('q'), cnt=document.getElementById('count'), cur='all';
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function render(){
+    var term=(q.value||'').toLowerCase(), n=0, html='';
+    L.forEach(function(r){
+      if(cur!=='all'&&r[0]!==cur)return;
+      if(term&&(r[1]+' '+r[2]).toLowerCase().indexOf(term)<0)return;
+      n++;
+      html+='<tr><td><span class="pill '+r[0]+'">'+labels[r[0]]+'</span></td><td class="name">'+esc(r[1])+'<small>'+esc(r[2])+' · '+esc(r[3])+'</small></td><td>'+esc(r[3])+'</td><td>'+esc(r[4])+'</td><td>'+esc(r[5])+'</td><td>'+esc(r[6])+'</td></tr>';
+    });
+    tb.innerHTML=html; cnt.textContent=n+' of '+L.length+' names';
+  }
+  document.getElementById('filters').addEventListener('click',function(e){
+    var b=e.target.closest('.chip'); if(!b)return;
+    cur=b.getAttribute('data-f');
+    document.querySelectorAll('.chip').forEach(function(c){c.setAttribute('aria-pressed',c===b?'true':'false')});
+    render();
+  });
+  q.addEventListener('input',render);
+  render();
+  // tabs
+  var tabs=document.querySelectorAll('.tab');
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    tabs.forEach(function(x){x.setAttribute('aria-selected','false');document.getElementById(x.getAttribute('aria-controls')).hidden=true});
+    t.setAttribute('aria-selected','true');document.getElementById(t.getAttribute('aria-controls')).hidden=false;
+  })});
+})();
+</script>
+</body>
+</html>
