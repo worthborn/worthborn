@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGX Compounder Book</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --black: #0a0a08; --cream: #f5f0e8; --gold: #c9a84c; --gold-light: #e8d08a;
+    --rust: #b85c38; --muted: #8a8478; --card: #13120f; --line: rgba(245,240,232,0.10);
+    --green: #7fa66a; --amber: #d9a441; --red: #c05a4a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--black); color: var(--cream); font-family: 'DM Sans', system-ui, sans-serif; font-weight: 300; line-height: 1.65; }
+  a { color: var(--gold-light); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 3.5rem 2rem 5rem; }
+  .eyebrow { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+  h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.05; margin: 0.8rem 0 1rem; text-wrap: balance; }
+  h1 em { font-style: italic; color: var(--gold); }
+  h2 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.6rem; margin: 0 0 0.4rem; text-wrap: balance; }
+  h2 em { font-style: italic; color: var(--gold); }
+  .lead { max-width: 62ch; color: rgba(245,240,232,0.72); font-size: 1.05rem; }
+  .mission { margin-top: 1.4rem; border-left: 2px solid var(--gold); padding: 0.4rem 1rem; font-family: 'Playfair Display', serif; font-style: italic; color: rgba(245,240,232,0.8); max-width: 70ch; }
+  section { margin-top: 3.2rem; }
+  .sub { color: var(--muted); max-width: 70ch; margin-bottom: 1.2rem; }
+  .tbl { overflow-x: auto; border: 1px solid var(--line); background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+  th { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-align: left; padding: 0.8rem 0.75rem; border-bottom: 1px solid rgba(201,168,76,0.35); white-space: nowrap; }
+  td { padding: 0.7rem 0.75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'DM Mono', monospace; font-size: 0.82rem; white-space: nowrap; }
+  td.name { font-weight: 500; color: var(--cream); white-space: nowrap; }
+  td.name small { display: block; font-family: 'DM Mono', monospace; font-weight: 400; font-size: 0.68rem; color: var(--muted); }
+  .pill { display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border: 1px solid; border-radius: 2px; white-space: nowrap; }
+  .buy { color: var(--green); border-color: var(--green); }
+  .hold { color: var(--gold-light); border-color: var(--gold); }
+  .strike { color: var(--amber); border-color: var(--amber); }
+  .sell { color: var(--red); border-color: var(--red); }
+  .tier { font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); padding: 0.9rem 0.75rem 0.3rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+  .stat { background: var(--card); border: 1px solid var(--line); padding: 1rem 1.1rem; }
+  .stat .k { font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+  .stat .v { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; margin: 0.25rem 0 0.15rem; font-variant-numeric: tabular-nums; }
+  .stat .d { font-size: 0.8rem; color: var(--muted); }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem 2.5rem; }
+  .cols h3 { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+  ul { padding-left: 1.1rem; }
+  li { margin-bottom: 0.45rem; color: rgba(245,240,232,0.82); }
+  li b { color: var(--cream); font-weight: 500; }
+  .next { margin-top: 3rem; background: var(--card); border: 1px solid rgba(201,168,76,0.4); border-left: 4px solid var(--gold); padding: 1.4rem 1.6rem; }
+  .next h2 { font-size: 1.3rem; }
+  .next p { max-width: 70ch; }
+  .foot { margin-top: 3rem; font-size: 0.78rem; color: var(--muted); max-width: 80ch; }
+  .foot p { margin-bottom: 0.5rem; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<style>nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 2rem; background: rgba(10,10,8,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(245,240,232,0.08); } .logo { font-family: "Playfair Display", serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; } .logo span { color: var(--cream); } nav ul { list-style: none; display: flex; gap: 1.5rem; } nav ul a { color: var(--cream); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; } nav ul a:hover, nav ul a.active { opacity: 1; color: var(--gold); } .wrap { padding-top: 6.5rem; }</style>
+</head>
+<body>
+<nav><a href="index.html" class="logo">WORTH<span>BORN</span></a><ul><li><a href="beliefs.html">Beliefs</a></li><li><a href="berkshire.html">Berkshire</a></li><li><a href="sgx-portfolio.html" class="active">SGX Book</a></li></ul></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Decision memo · SGX sleeve · 4 September 2026</div>
+  <h1>Ten Singapore names that can <em>compound</em></h1>
+  <p class="lead">The gating decision. Seven names to own or buy now, three armed at a strike price, five exits. Target sleeve about S$100,000, blended prospective return in the low-to-mid teens, judged name by name below.</p>
+  <p class="mission">Mission: compound capital and wisdom to bring family and the temple to abundance. Vision: a loving wife, a landed house, an investment business worth ~S$100m in equity. This sleeve is one brick of that house.</p>
+
+  <div class="grid">
+    <div class="stat"><div class="k">Sleeve target</div><div class="v">S$100k</div><div class="d">S$43k kept + S$57k new (SRS S$12.5k, IBKR cash S$45k)</div></div>
+    <div class="stat"><div class="k">Names</div><div class="v">7 + 3</div><div class="d">7 own or buy now · 3 at strike · 5 exits</div></div>
+    <div class="stat"><div class="k">Blended prospective</div><div class="v">12–15%</div><div class="d">judgment, per-name ranges below; hurdle is Azeus</div></div>
+    <div class="stat"><div class="k">Deploy now</div><div class="v">S$36k</div><div class="d">S$21k reserved for strikes and second tranches</div></div>
+  </div>
+
+  <section>
+    <h2>The board <em>at a glance</em></h2>
+    <p class="sub">Prices carry their observation date. Every "prospective" figure is a judgment, not a statement number. Unknown = "—".</p>
+    <div class="tbl">
+    <table>
+      <thead><tr><th>Name</th><th>What you own</th><th class="num">Price (date)</th><th class="num">Valuation</th><th class="num">Yield</th><th class="num">Target wt</th><th class="num">Prospective</th><th>Verdict · level</th></tr></thead>
+      <tbody>
+        <tr><td colspan="8" class="tier">A · Compounders on their own account</td></tr>
+        <tr><td class="name">Azeus Systems<small>BBW · SRS</small></td><td>Convene board-portal SaaS, 76% gross margin, negative invested capital, 82% controller</td><td class="num">S$10.35 (early Sep)</td><td class="num">~14x FY26 EPS HK$4.49</td><td class="num">~6.9% (HK$4.40)</td><td class="num">12%</td><td class="num">18–24%</td><td><span class="pill buy">Buy now</span> build ≤S$11.50 · hard &lt;S$9.50</td></tr>
+        <tr><td class="name">iFAST Corp<small>AIY · IBKR</small></td><td>Wealth platform, AUA S$36.1bn +33%, 2Q26 profit +35%, ROE 27.2%, bank now profitable</td><td class="num">S$8.86 (28 Aug)</td><td class="num">23.4x trailing; teens forward</td><td class="num">~1%</td><td class="num">10%</td><td class="num">12–18%</td><td><span class="pill buy">Starter 5%</span> ≤S$9.00 · rest after one-pager</td></tr>
+        <tr><td class="name">Kimly<small>1D0 · IBKR</small></td><td>Coffee-shop operator, 1H26 profit +10.6% to S$16.4m, FY25 profit S$33.3m</td><td class="num">~S$0.395 (Aug)</td><td class="num">~14x</td><td class="num">~5.1%</td><td class="num">8%</td><td class="num">10–13%</td><td><span class="pill buy">Starter 4%</span> ≤S$0.40 · rest after one-pager</td></tr>
+        <tr><td class="name">Vicom<small>WJP</small></td><td>Vehicle inspection, 1H26 profit +28% to S$19.9m, zero debt, 2H guided softer</td><td class="num">S$1.83 (late Aug)</td><td class="num">~16x annualised 1H</td><td class="num">~4.9% (9c)</td><td class="num">6%</td><td class="num">9–12%</td><td><span class="pill strike">Strike</span> buy ≤S$1.70</td></tr>
+        <tr><td colspan="8" class="tier">B · Real estate and bank, at a discount, with a live mechanism</td></tr>
+        <tr><td class="name">Hongkong Land<small>H78 · IBKR (USD)</small></td><td>Central HK offices, NAV US$14.71, US$492m bought back since Apr-25, gearing 11%, 1H26 underlying +11%</td><td class="num">US$8.37 (early Sep)</td><td class="num">0.57x NAV (43% discount)</td><td class="num">~3.3%</td><td class="num">12%</td><td class="num">10–15%</td><td><span class="pill buy">Buy now</span> ≤US$9.00</td></tr>
+        <tr><td class="name">Haw Par<small>H02 · SRS + CPF</small></td><td>4.53% of UOB + 8.5% of UOL + S$790m cash + Tiger Balm free; SOTP S$24–25</td><td class="num">S$15.17 (18 Aug)</td><td class="num">0.71x marked NAV</td><td class="num">2.6%</td><td class="num">12%</td><td class="num">10–12%</td><td><span class="pill hold">Hold</span> add &lt;S$13.50 · trim &gt;S$21</td></tr>
+        <tr><td class="name">Wee Hur<small>E3B · IBKR</small></td><td>Australian student housing (PBSA) fund platform + construction, 1H26 PATMI +17% to S$45.3m</td><td class="num">S$0.72–0.80 (Aug/Sep)</td><td class="num">~9–11x</td><td class="num">—</td><td class="num">6%</td><td class="num">10–15%</td><td><span class="pill buy">Starter 3%</span> ≤S$0.80 · rest after one-pager</td></tr>
+        <tr><td class="name">UOB<small>U11</small></td><td>Cheapest of the three banks: ~1.37x book, ROE 11.6%, S$2bn buyback one-third done</td><td class="num">S$40.79 (28 Aug)</td><td class="num">~1.37x book</td><td class="num">~3.8% (FY25 S$1.56)</td><td class="num">8%</td><td class="num">9–11%</td><td><span class="pill strike">Strike</span> buy ≤S$36 (1.2x book)</td></tr>
+        <tr><td colspan="8" class="tier">C · Holdco discounts already owned, kept for the discount, no adds</td></tr>
+        <tr><td class="name">Thakral<small>AWI · IBKR + CPF</small></td><td>16.8% of GemLife (ASX) at 0.67x NAV S$2.42; 1H26 adjusted profit +47%, headline loss on GemLife mark</td><td class="num">S$1.62 (18 Aug)</td><td class="num">0.67x NAV</td><td class="num">4.0%</td><td class="num">8%</td><td class="num">12–16%</td><td><span class="pill hold">Hold</span> add &lt;S$1.45 · trim &gt;S$2.10</td></tr>
+        <tr><td class="name">Boustead Singapore<small>F9D · SRS + CPF</small></td><td>Esri ArcGIS exclusivity; cash + REIT stake = 94.5c of the price; Geospatial profit shrank 19% FY26</td><td class="num">S$1.86 (late Aug)</td><td class="num">0.86x underwritten S$2.16</td><td class="num">2.9% ordinary</td><td class="num">8%</td><td class="num">8–12%</td><td><span class="pill hold">Hold</span> add only if FY27 Geo OP &gt;S$48m · trim &gt;S$2.43</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Exits that <em>fund</em> it</h2>
+    <p class="sub">Verdicts written 18 August; none has changed. CPF-OA proceeds stay in OA cash at 2.5% under the property rule. SRS proceeds go straight into Azeus.</p>
+    <div class="tbl">
+    <table>
+      <thead><tr><th>Name</th><th>Account</th><th class="num">Price (date)</th><th>Why</th><th class="num">Approx. proceeds</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td class="name">OCBC<small>O39</small></td><td>SRS 300 sh</td><td class="num">S$30.81 (18 Aug)</td><td>2.24x book, ROE resting on trading + insurance income, management prefers cash to buybacks at this price</td><td class="num">S$9.2k</td><td><span class="pill sell">Sell above S$30</span></td></tr>
+        <tr><td class="name">Sheng Siong<small>OV8</small></td><td>SRS 500 sh</td><td class="num">S$3.25 (7 Aug)</td><td>Superb business at 30.9x for 3.9% EPS growth; 1H26 profit +11.9% does not change the multiple problem</td><td class="num">S$1.6k</td><td><span class="pill sell">Sell</span></td></tr>
+        <tr><td class="name">Straits Trading<small>S20</small></td><td>SRS 590 sh</td><td class="num">S$1.61 (18 Aug)</td><td>Levered holdco, no catalyst, weakest business in the book</td><td class="num">S$0.9k</td><td><span class="pill sell">Sell first</span></td></tr>
+        <tr><td class="name">Hong Leong Asia<small>H22</small></td><td>CPF-OA 1,200 sh</td><td class="num">S$3.16 (18 Aug)</td><td>The China Yuchai discount has closed after a 390% run; 54% of profit leaks to minorities</td><td class="num">S$3.8k → OA cash</td><td><span class="pill sell">Sell</span></td></tr>
+        <tr><td class="name">Far East Orchard<small>O10</small></td><td>CPF-OA 2,000 sh</td><td class="num">S$1.08 (18 Aug)</td><td>Deep discount, no catalyst, and it is the employer's group</td><td class="num">S$2.2k → OA cash</td><td><span class="pill sell">Sell</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where the new money <em>goes</em></h2>
+    <div class="cols">
+      <div>
+        <h3>SRS (about S$12.5k after exits)</h3>
+        <ul>
+          <li><b>Azeus, ~1,150 shares.</b> Limit orders over two weeks; daily volume runs 100 to 5,700 shares. Do not chase above S$11.50.</li>
+          <li>Haw Par and Boustead stay where they are.</li>
+        </ul>
+        <h3>CPF-OA</h3>
+        <ul>
+          <li>Keep Haw Par 500 and Thakral 4,500 (thesis-backed). Sell Hong Leong Asia and Far East Orchard to OA cash. No new stock buys; OA is the condo downpayment.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>IBKR (S$45k of the S$137k cash)</h3>
+        <ul>
+          <li><b>Hongkong Land S$12k</b> at or below US$9.00.</li>
+          <li><b>iFAST S$5k</b> starter at or below S$9.00.</li>
+          <li><b>Kimly S$4k</b> starter at or below S$0.40.</li>
+          <li><b>Wee Hur S$3k</b> starter at or below S$0.80.</li>
+          <li><b>S$21k held back</b> for UOB ≤S$36, Vicom ≤S$1.70, and the second tranches of iFAST, Kimly, Wee Hur once their one-pagers are written.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Kill criteria, <em>written before the buy</em></h2>
+    <div class="cols">
+      <div>
+        <ul>
+          <li><b>Azeus.</b> Contract liabilities at 31 Mar 2027 grow under 15%, or the CERKS licence dispute is lost. Either fires: exit.</li>
+          <li><b>iFAST.</b> Two quarters of net outflows, or the Global Bank slips back into loss, or Hong Kong ePension revenue runs off with no replacement disclosed.</li>
+          <li><b>Kimly.</b> Outlet count falls, net margin under 8%, or dividend uncovered by free cash flow.</li>
+          <li><b>Vicom (if struck).</b> Inspection volumes fall two halves running, or the parent proposes a take-private below S$2.</li>
+          <li><b>Hongkong Land.</b> Buyback paused, Central office vacancy rises two halves running, or gearing above 20%.</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><b>Haw Par.</b> Tiger Balm revenue falls again in FY26, or the family deploys the cash pile into anything other than dividends or a buyback.</li>
+          <li><b>Wee Hur.</b> Fund II leasing under 85%, a failed capital raise, or PATMI ex-one-offs declining.</li>
+          <li><b>UOB (if struck).</b> Fully phased-in CET1 under 13.5%, or group NPL above 2%.</li>
+          <li><b>Thakral.</b> DJI distribution lost, or GemLife falls more than 30% from its 30 Jun mark.</li>
+          <li><b>Boustead.</b> FY27 Geospatial operating profit under S$40m, or Esri exclusivity not renewed.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Looked at, <em>left out</em></h2>
+    <div class="cols">
+      <div>
+        <ul>
+          <li><b>DBS</b> S$75.56, 3.06x book: best bank, worst price. Pass. Buy under S$55.</li>
+          <li><b>Singapore Exchange</b> ~35x trailing. Pass.</li>
+          <li><b>CapitaLand Investment</b> S$2.69, ~25x operating earnings, your own 10 Aug verdict was Pass; 1H26 operating PATMI +13% and a S$7–9bn divestment plan do not close the gap. Employer-peer, compliance-sensitive.</li>
+          <li><b>Micro-Mechanics</b> S$2.68, 23x: fine business (FY26 revenue +15.8%, 51.6% gross margin, S$150m revenue target by FY2031) above your 20x line. Watch ≤S$2.20.</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><b>Parkway Life REIT</b> 4.2% forward yield at 1.4x book, DPU +14.6%: quality, but 8–9% is the ceiling. Income tracker only.</li>
+          <li><b>Frasers Centrepoint Trust</b> 5.3% at 0.97x book; <b>Far East Hospitality Trust</b> 6.7% at a 37% discount: trackers, not compounders, and the second is the employer's sponsor.</li>
+          <li><b>Riverstone</b> 5.8% yield, 2Q26 profit +45% year on year: glove cycle, not a franchise. Watch.</li>
+          <li><b>Delfi</b> S$0.89–1.01, 1H26 PATMI +5.4%: Indonesian chocolate brand, cocoa relief coming, but no P/E on file yet. Queue for a one-pager before any position.</li>
+          <li><b>Straco, Yeo Hiap Seng:</b> cash-rich, shrinking. Trackers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="next">
+    <h2>One next move</h2>
+    <p>Place the SRS orders this week: sell Straits Trading, Sheng Siong and OCBC; start the Azeus limit ladder at S$10.30 to S$11.00. Everything else waits on that first rep being executed, not planned.</p>
+  </div>
+
+  <div class="foot">
+    <p><b>Honest caveats.</b> The whole book, IBKR plus SGX, is 17 non-SGX names plus this sleeve; "8 to 12 stocks" for the whole life needs a consolidation rep on the global book that this memo does not attempt. Three of the seven owned names (Haw Par, Thakral, Boustead) are holdco discounts whose return is the underlying's return plus a gap that may never close; the sleeve compounds only if the Tier A names are actually bought at size.</p>
+    <p><b>Sources.</b> Vault reports of 18 Aug 2026 (BBW, F9D, AWI, H02, H22, OV8, D05, O39, S20, O10, Q5T, Y03); SGX-opportunity-cost-ranking 18 Aug; 9CI note 10 Aug; ibkr-live 21 Aug; manual-balances 17 Aug; srs-portfolio 4 May. Late-Aug and early-Sep prices and 1H26 results from public press summaries (Growbeansprout, Minichart, The Edge, Yahoo Finance, Stockopedia, Simply Wall St, company releases). Verify every price before transacting.</p>
+  </div>
+</div>
+</body>
+</html>
