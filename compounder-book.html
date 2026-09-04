@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Twelve</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --black: #0a0a08; --cream: #f5f0e8; --gold: #c9a84c; --gold-light: #e8d08a;
+    --rust: #b85c38; --muted: #8a8478; --card: #13120f; --line: rgba(245,240,232,0.10);
+    --green: #7fa66a; --amber: #d9a441; --red: #c05a4a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--black); color: var(--cream); font-family: 'DM Sans', system-ui, sans-serif; font-weight: 300; line-height: 1.65; }
+  a { color: var(--gold-light); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 3.5rem 2rem 5rem; }
+  .eyebrow { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+  h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.05; margin: 0.8rem 0 1rem; text-wrap: balance; }
+  h1 em { font-style: italic; color: var(--gold); }
+  h2 { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 1.6rem; margin: 0 0 0.4rem; text-wrap: balance; }
+  h2 em { font-style: italic; color: var(--gold); }
+  .lead { max-width: 64ch; color: rgba(245,240,232,0.72); font-size: 1.05rem; }
+  .mission { margin-top: 1.4rem; border-left: 2px solid var(--gold); padding: 0.4rem 1rem; font-family: 'Playfair Display', serif; font-style: italic; color: rgba(245,240,232,0.8); max-width: 70ch; }
+  section { margin-top: 3.2rem; }
+  .sub { color: var(--muted); max-width: 72ch; margin-bottom: 1.2rem; }
+  .tbl { overflow-x: auto; border: 1px solid var(--line); background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+  th { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-align: left; padding: 0.8rem 0.7rem; border-bottom: 1px solid rgba(201,168,76,0.35); white-space: nowrap; }
+  td { padding: 0.65rem 0.7rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'DM Mono', monospace; font-size: 0.8rem; white-space: nowrap; }
+  td.name { font-weight: 500; color: var(--cream); white-space: nowrap; }
+  td.name small { display: block; font-family: 'DM Mono', monospace; font-weight: 400; font-size: 0.68rem; color: var(--muted); }
+  .pill { display: inline-block; font-family: 'DM Mono', monospace; font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.5rem; border: 1px solid; border-radius: 2px; white-space: nowrap; }
+  .buy { color: var(--green); border-color: var(--green); }
+  .hold { color: var(--gold-light); border-color: var(--gold); }
+  .strike { color: var(--amber); border-color: var(--amber); }
+  .sell { color: var(--red); border-color: var(--red); }
+  .tier { font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); padding: 0.9rem 0.7rem 0.3rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+  .stat { background: var(--card); border: 1px solid var(--line); padding: 1rem 1.1rem; }
+  .stat .k { font-family: 'DM Mono', monospace; font-size: 0.66rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+  .stat .v { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; margin: 0.25rem 0 0.15rem; font-variant-numeric: tabular-nums; }
+  .stat .d { font-size: 0.8rem; color: var(--muted); }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem 2.5rem; }
+  .cols h3 { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+  ul { padding-left: 1.1rem; }
+  li { margin-bottom: 0.45rem; color: rgba(245,240,232,0.82); }
+  li b { color: var(--cream); font-weight: 500; }
+  .next { margin-top: 3rem; background: var(--card); border: 1px solid rgba(201,168,76,0.4); border-left: 4px solid var(--gold); padding: 1.4rem 1.6rem; }
+  .next h2 { font-size: 1.3rem; }
+  .next p { max-width: 72ch; }
+  .foot { margin-top: 3rem; font-size: 0.78rem; color: var(--muted); max-width: 82ch; }
+  .foot p { margin-bottom: 0.5rem; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<style>nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 2rem; background: rgba(10,10,8,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(245,240,232,0.08); } .logo { font-family: "Playfair Display", serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; } .logo span { color: var(--cream); } nav ul { list-style: none; display: flex; gap: 1.5rem; } nav ul a { color: var(--cream); text-decoration: none; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; } nav ul a:hover, nav ul a.active { opacity: 1; color: var(--gold); } .wrap { padding-top: 6.5rem; }</style>
+</head>
+<body>
+<nav><a href="index.html" class="logo">WORTH<span>BORN</span></a><ul><li><a href="beliefs.html">Beliefs</a></li><li><a href="berkshire.html">Berkshire</a></li><li><a href="compounder-book.html" class="active">The Twelve</a></li><li><a href="sgx-portfolio.html">SGX Sleeve</a></li></ul></nav>
+
+<div class="wrap">
+  <div class="eyebrow">Decision memo · whole book · 4 September 2026</div>
+  <h1>The <em>Twelve</em></h1>
+  <p class="lead">Every old name across China, Japan, the United States and Singapore, screened the magic-formula way: high return on capital, cheap earnings, inside your four zones, with a written thesis wherever one exists. Twelve survive. Eight fold. The rest sit on a bench with written prices.</p>
+  <p class="mission">Mission: compound capital and wisdom to bring family and the temple to abundance. Vision: a loving wife, a landed house, an investment business worth ~S$100m in equity. Twelve names, sized like they matter, held uninterrupted.</p>
+
+  <div class="grid">
+    <div class="stat"><div class="k">Investable book</div><div class="v">~S$284k</div><div class="d">IBKR NAV S$258k (21 Aug) + SRS ~S$26k; CPF-OA excluded</div></div>
+    <div class="stat"><div class="k">Core</div><div class="v">12</div><div class="d">≈72% of book at target · 7 held, 5 to buy</div></div>
+    <div class="stat"><div class="k">Fold</div><div class="v">8</div><div class="d">≈10% of book, all under 2% each</div></div>
+    <div class="stat"><div class="k">Strike fired</div><div class="v">Anta</div><div class="d">HK$75.85 on 3 Sep vs armed HK$70–75</div></div>
+  </div>
+
+  <section>
+    <h2>The core <em>twelve</em></h2>
+    <p class="sub">Prices carry their observation date. Multiples are as found in public sources on that date, not recomputed. Prospective returns are judgments. Unknown = "—".</p>
+    <div class="tbl">
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>Why it is here</th><th class="num">Price (date)</th><th class="num">Multiple</th><th class="num">Now</th><th class="num">Target</th><th>Verdict · level</th></tr></thead>
+      <tbody>
+        <tr><td colspan="8" class="tier">China · Hong Kong (zone 1: Asia value, China consumer quality)</td></tr>
+        <tr><td class="num">1</td><td class="name">Tencent<small>0700.HK</small></td><td>Games and ads compounding; 2Q26 revenue +11%, non-IFRS profit +9%; capex +190% is the cost of the AI option</td><td class="num">HK$457–479 (late Aug)</td><td class="num">16x TTM</td><td class="num">14.1%</td><td class="num">10%</td><td><span class="pill hold">Hold · trim to cap</span> add &lt;HK$440</td></tr>
+        <tr><td class="num">2</td><td class="name">Anta Sports<small>2020.HK</small></td><td>China's largest sportswear group, 62% gross margin, RMB 52bn+ net cash; 1H26 revenue +12.9%, operating profit +16.1%, attributable profit +34.9%</td><td class="num">HK$75.85 (3 Sep)</td><td class="num">~12x FY25 EPS (thesis est.)</td><td class="num">0%</td><td class="num">8%</td><td><span class="pill buy">Buy now</span> strike HK$70–75 fired</td></tr>
+        <tr><td class="num">3</td><td class="name">Midea<small>0300.HK</small></td><td>Well-run appliance cyclical at fair value; ~14x ex-customer-float per your 19 Aug report</td><td class="num">HK$95.50 (17 Aug)</td><td class="num">14.2x · ~5–6% yield</td><td class="num">4.3%</td><td class="num">5%</td><td><span class="pill hold">Hold</span> add &lt;HK$85 · trim &gt;HK$140</td></tr>
+        <tr><td class="num">4</td><td class="name">PDD<small>PDD</small></td><td>US$67bn of cash against a ~US$125bn market cap; profit −12% in 2Q26 but operating cash flow +19%; Li Lu, Lou and Duan all adding</td><td class="num">US$88–91 (25 Aug)</td><td class="num">8.7x</td><td class="num">4.0%</td><td class="num">5%</td><td><span class="pill buy">Build to cap</span> opacity caps size at 5%</td></tr>
+        <tr><td class="num">5</td><td class="name">Trip.com<small>9961.HK · TCOM</small></td><td>Held on a 3-of-4 evidence gate; 2Q26 results due 15 Sep, guided growth 3–8%</td><td class="num">HK$361.60 (20 Aug)</td><td class="num">—</td><td class="num">4.5%</td><td class="num">4.5%</td><td><span class="pill hold">Hold</span> add &lt;HK$330 · trim &gt;HK$530 · verdict 15 Sep</td></tr>
+        <tr><td colspan="8" class="tier">United States (zone 3: quality bought in drawdown)</td></tr>
+        <tr><td class="num">6</td><td class="name">Crocs<small>CROX</small></td><td>Record 2Q26 revenue US$1.18bn, EPS US$4.13, quarterly free cash flow US$331m, guidance raised; price sits on your written add level</td><td class="num">US$115.3 (early Sep)</td><td class="num">~7x P/FCF (Mar)</td><td class="num">3.0%</td><td class="num">8%</td><td><span class="pill buy">Add</span> trigger ≤US$115 live</td></tr>
+        <tr><td class="num">7</td><td class="name">Adobe<small>ADBE</small></td><td>Highest return on capital in the book; de-rated on AI fear; 3Q FY26 print 10 Sep, so no action into it</td><td class="num">US$279.79 (early Sep)</td><td class="num">16.3x TTM</td><td class="num">2.7%</td><td class="num">5%</td><td><span class="pill strike">Hold · add ≤US$250</span> after 10 Sep, AI-moat gate</td></tr>
+        <tr><td class="num">8</td><td class="name">PayPal<small>PYPL</small></td><td>FY25 adjusted free cash flow US$6.4bn on a ~US$52bn market cap; dividend initiated; price on the add trigger</td><td class="num">US$53.66 (recent)</td><td class="num">11.5x trailing · 11x fwd</td><td class="num">1.5%</td><td class="num">5%</td><td><span class="pill buy">Add &lt;US$54</span> if branded TPV ≥2% FXN at the 2Q print</td></tr>
+        <tr><td class="num">9</td><td class="name">Sirius XM<small>SIRI</small></td><td>2026 free cash flow guided US$1.375bn (raised); record-low churn; Berkshire owns 35%; your deck marks it "thesis written"</td><td class="num">US$27.88 (9 Jun, stale)</td><td class="num">7.3x P/FCF</td><td class="num">~0%</td><td class="num">5%</td><td><span class="pill buy">Buy</span> ≤US$30 · refresh price first</td></tr>
+        <tr><td colspan="8" class="tier">Singapore (zone 1: SGX value) — the three that earned a core slot</td></tr>
+        <tr><td class="num">10</td><td class="name">Azeus Systems<small>BBW · SRS</small></td><td>Board-portal SaaS, 76% gross margin, negative invested capital, forward book +23.5%</td><td class="num">S$10.35 (early Sep)</td><td class="num">~14x · ~6.9% yield</td><td class="num">0%</td><td class="num">5%</td><td><span class="pill buy">Buy now</span> ≤S$11.50 via SRS ladder</td></tr>
+        <tr><td class="num">11</td><td class="name">Hongkong Land<small>H78</small></td><td>0.57x NAV with US$492m bought back since Apr-25, gearing 11%, dividend +33%</td><td class="num">US$8.37 (early Sep)</td><td class="num">0.57x NAV</td><td class="num">0%</td><td class="num">5%</td><td><span class="pill buy">Buy now</span> ≤US$9.00</td></tr>
+        <tr><td class="num">12</td><td class="name">Haw Par<small>H02 · SRS + CPF</small></td><td>The bank sleeve: 4.53% of UOB at a 30–40% discount, S$790m cash, Tiger Balm free</td><td class="num">S$15.17 (18 Aug)</td><td class="num">0.71x marked NAV</td><td class="num">~5%</td><td class="num">5%</td><td><span class="pill hold">Hold</span> add &lt;S$13.50 · trim &gt;S$21</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Fold: right calls at <em>timid size</em> don't compound</h2>
+    <p class="sub">Every position under 2% with no add trigger within reach of the price. The lesson from the ledger is that these never mattered even when they worked. Proceeds fund the five buys above.</p>
+    <div class="tbl">
+    <table>
+      <thead><tr><th>Name</th><th class="num">% NAV</th><th class="num">P&amp;L</th><th>Why fold</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Berkshire B<small>BRK.B</small></td><td class="num">2.0%</td><td class="num">+4%</td><td>Passive proxy at ~US$508; your own tracker says own the businesses directly</td></tr>
+        <tr><td class="name">Nippon Paint<small>4612.T</small></td><td class="num">1.8%</td><td class="num">+19%</td><td>Verdict was hold, no add; 14x with goodwill-heavy returns; too small to matter, trigger ¥1,000 far below ¥1,195</td></tr>
+        <tr><td class="name">Honeywell + Honeywell Aero<small>HON · HONA</small></td><td class="num">1.9%</td><td class="num">−14% / −24%</td><td>The pending pair, settled: HON forward 26.6x is not cheap; HONA carries US$16bn of new debt and cut its debut outlook. Fold both</td></tr>
+        <tr><td class="num" style="text-align:left"><span class="name">Alphabet</span><br><small style="font-family:'DM Mono',monospace;color:var(--muted)">GOOGL</small></td><td class="num">1.0%</td><td class="num">−4%</td><td>Superb at 16.7x, but your add level is US$265–270 against US$359; a 1% holding is a bookmark, not a position. Moves to the bench</td></tr>
+        <tr><td class="name">Alibaba<small>9988.HK</small></td><td class="num">0.8%</td><td class="num">−2%</td><td>Twice a scar on the ledger; 19x; FCF negative on AI capex</td></tr>
+        <tr><td class="name">Prada<small>1913.HK</small></td><td class="num">0.8%</td><td class="num">+6%</td><td>Good print (revenue +16% constant FX) but 0.8% at 14x with buy level HK$38 vs HK$40. Bench with the written price</td></tr>
+        <tr><td class="name">TFG<small>TFG</small></td><td class="num">0.7%</td><td class="num">−25%</td><td>Already "watch → exit"</td></tr>
+        <tr><td class="name">Molina<small>MOH</small></td><td class="num">0.5%</td><td class="num">+3%</td><td>Forward 27x after the earnings collapse; the MCR gate failed</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>The bench: <em>written prices</em>, no action</h2>
+    <div class="cols">
+      <div>
+        <h3>China · Japan</h3>
+        <ul>
+          <li><b>Pop Mart</b> HK$154 (2 Sep), 12–15x: armed HK$90–105 or a second IP at RMB 3bn.</li>
+          <li><b>NetEase</b> US$121–127, 16x with RMB 167.5bn net cash: buy under US$100.</li>
+          <li><b>JD.com</b> ~8.6x: starter under US$29 only.</li>
+          <li><b>Kweichow Moutai</b> ¥1,309, 18–20x, 37% below its own median: one-pager first.</li>
+          <li><b>Nintendo</b> ¥8,838, ~21.6x: arm at 18–20x trough earnings.</li>
+          <li><b>M-up</b> ¥2,068–2,168, 18.5x headline: one-pager to strip the cash.</li>
+          <li><b>Marubeni</b> 14.2x with a new buyback; <b>Mitsui</b> ~16x: re-rated, hold in BRe, no new money.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>United States · Canada · Singapore</h3>
+        <ul>
+          <li><b>Chubb</b> US$347, 12x, tangible book +17%: first name in if any core slot opens.</li>
+          <li><b>Alphabet</b> add ~US$265–270. <b>Intuit</b> under US$300.</li>
+          <li><b>Fairfax</b> C$2,272 at 1.29x book: buy at ≤1.2x, about C$2,110.</li>
+          <li><b>Leon's</b> C$24.32, 10.5x, ~13.7% FCF yield: thesis says buy; illiquid and outside the four zones, so it stays a bench name until a core slot opens.</li>
+          <li><b>Progressive</b> 10.5x but June combined ratio 90%; <b>DaVita</b> US$179 at 15x: the re-entry window has closed.</li>
+          <li><b>NVR</b> ~14.7x, buyback machine at a housing trough; Berkshire's Taylor Morrison take-out is the control comp: one-pager.</li>
+          <li><b>UOB</b> ≤S$36 · <b>Vicom</b> ≤S$1.70 · <b>iFAST, Kimly, Wee Hur</b> starters only after one-pagers (see the SGX sleeve page).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What the money <em>does</em></h2>
+    <div class="cols">
+      <div>
+        <h3>Sources (≈S$160k)</h3>
+        <ul>
+          <li>Cash on hand: S$137k (IBKR, 21 Aug).</li>
+          <li>Folds: ≈S$25k across the eight names.</li>
+          <li>Tencent trim from 14% toward 10%: ≈S$10k.</li>
+          <li>SRS exits (OCBC, Sheng Siong, Straits Trading): ≈S$12k, ring-fenced for Azeus.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Uses (≈S$95k now, rest held for triggers)</h3>
+        <ul>
+          <li><b>Anta S$23k</b> now, at or below HK$78.</li>
+          <li><b>Crocs S$14k</b> at or below US$115. <b>PDD S$3k</b> to the cap.</li>
+          <li><b>Sirius XM S$14k</b> at or below US$30, after a fresh price check.</li>
+          <li><b>Hongkong Land S$14k</b> at or below US$9. <b>Azeus S$12k</b> in SRS.</li>
+          <li><b>PayPal S$10k</b> once the branded-TPV condition is read off the 2Q print.</li>
+          <li><b>Held back ≈S$65k</b> for Adobe ≤US$250 after 10 Sep, Trip.com after 15 Sep, and the bench triggers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Kill criteria on the <em>new money</em></h2>
+    <ul>
+      <li><b>Anta.</b> Core Anta brand revenue down two halves running; Fila under 3% two years; a second large Puma deployment; operating margin under 20%; net cash under RMB 20bn without a return of capital. Written 4 May, unchanged.</li>
+      <li><b>Crocs.</b> Crocs Brand revenue turns negative for two quarters, or HEYDUDE impairment recurs; leverage above 2x EBITDA.</li>
+      <li><b>PayPal.</b> Branded TPV ≤0% for two quarters, take-rate under 1.65%, or a buyback-pausing deal.</li>
+      <li><b>Sirius XM.</b> Free cash flow guide cut below US$1.2bn, self-pay churn rising two quarters, or net debt above 4x EBITDA.</li>
+      <li><b>Azeus, Hongkong Land.</b> As written on the SGX sleeve page: forward book under +15% or CERKS lost; buyback paused or Central vacancy rising.</li>
+    </ul>
+  </section>
+
+  <div class="next">
+    <h2>One next move</h2>
+    <p>Buy Anta this week. The strike was written in May, the price arrived on 3 Sep, and the half-year confirmed the business: revenue +12.9%, attributable profit +34.9%. Place S$23k at or below HK$78 in two tranches. Nothing else until that order is filled.</p>
+  </div>
+
+  <div class="foot">
+    <p><b>Honest caveats.</b> Sirius XM's price is from June and must be refreshed. Anta's ~12x uses the May thesis's FY25 EPS estimate against the 3 Sep price; the 1H26 filing's own EPS should replace it before the second tranche. Trip.com stays in the twelve only because its gate resolves on 15 Sep; if it fails, Chubb takes the slot. The four zones and the magic-formula lens agree on eleven of twelve; Hongkong Land is a large-cap holdco discount, kept for the buyback mechanism rather than for return on capital.</p>
+    <p><b>Sources.</b> ibkr-live (21 Aug), monitor-watchlist (21 Aug), universe-tracker, research-queue, ANTA thesis (4 May), Midea and Tencent brain reports (18–19 Aug), past-positions-lessons, SGX sleeve page (4 Sep). Prices and results from public press summaries, company releases and SEC filings, late Aug to 4 Sep 2026. Verify every price before transacting.</p>
+  </div>
+</div>
+</body>
+</html>
